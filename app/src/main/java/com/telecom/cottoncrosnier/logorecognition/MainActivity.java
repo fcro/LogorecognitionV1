@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     public static final String KEY_PHOTO_PATH = "key_photo";
-    public static final String KEY_PHOTO_NUMBER = "key_img_number";
     public static final String KEY_PHOTO_DESCRIPTION = "key_description";
 
     private final static int TAKE_PHOTO_REQUEST = 1;
@@ -114,19 +113,29 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onActivityResult() called with: requestCode = [" + requestCode + "], resultCode = [" + resultCode + "], data = [" + data + "]");
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == TAKE_PHOTO_REQUEST && resultCode == RESULT_OK) {
-            Bundle b = data.getExtras();
-            Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
-            int photoNumber = b.getInt(KEY_PHOTO_NUMBER);
-
+        if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            Uri imgPath = data.getData();
+            int photoNumber = 3;
             Log.d(TAG, "onActivityResult:: imgPath = " + imgPath.toString());
             Log.d(TAG, "onActivityResult:: photoNumber = " + photoNumber);
 
-            startAnalyze(imgPath, photoNumber);
+            startAnalyze(imgPath);
+
+        } else if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_CANCELED) {
+            Log.d(TAG, "onActivityResult:: gallery & canceled");
+            toast(getString(R.string.toast_gallery_canceled));
+
+        } else if (requestCode == TAKE_PHOTO_REQUEST && resultCode == RESULT_OK) {
+            Bundle b = data.getExtras();
+            Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
+
+            Log.d(TAG, "onActivityResult:: imgPath = " + imgPath.toString());
+
+            startAnalyze(imgPath);
 
         } else if (requestCode == TAKE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
             Log.d(TAG, "onActivityResult: take photo & canceled");
-            toast(getString(R.string.toast_photo_cancelled));
+            toast(getString(R.string.toast_photo_canceled));
 
         } else if (requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_OK) {
             Log.d(TAG, "onActivityResult: analyse & ok");
@@ -135,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
             Bundle b = data.getExtras();
             Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
             String description = b.getString(KEY_PHOTO_DESCRIPTION);
-            int photoNumber = b.getInt(KEY_PHOTO_NUMBER);
 
 
             try {
@@ -146,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 mMainImage.setImageBitmap(bitmap);
                 mImageDescription.setText(description);
 
-                mArrayPhoto.add(new Photo(bitmap, description, photoNumber));
+                mArrayPhoto.add(new Photo(bitmap, description));
                 toast(getString(R.string.toast_photo_ok));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -156,12 +164,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void startAnalyze(Uri uri, int imgNumber) {
+    private void startAnalyze(Uri uri) {
 
         Intent startAnalyze = new Intent(MainActivity.this, AnalizePhoto.class);
 
         startAnalyze.putExtra(KEY_PHOTO_PATH, uri);
-        startAnalyze.putExtra(KEY_PHOTO_NUMBER, imgNumber);
 
         startActivityForResult(startAnalyze, ANALYZE_PHOTO_REQUEST);
     }

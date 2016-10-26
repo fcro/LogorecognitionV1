@@ -9,5 +9,6 @@
     <string name="description">Description</string>
     <string name="ok_Button">Description ok</string>
     <string name="toast_photo_ok">Photo taken and added</string>
-    <string name="toast_photo_cancelled">Photo not taken</string>
+    <string name="toast_photo_canceled">Photo not taken</string>
+    <string name="toast_gallery_canceled">No photo selected</string>
 </resources>

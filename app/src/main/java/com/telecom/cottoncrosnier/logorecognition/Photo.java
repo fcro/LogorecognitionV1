@@ -14,14 +14,12 @@ public class Photo {
 
     private static final int INDEX_IMG = 0;
     private static final int INDEX_DESCRIPTION = 1;
-    private static final int INDEX_PHOTO_NUMBER = 2;
 
-    public Photo(Bitmap img, String description, int photoNumber){
+    public Photo(Bitmap img, String description){
         photo = new ArrayList<>(3);
 
         photo.add(INDEX_IMG, img);
         photo.add(INDEX_DESCRIPTION, description);
-        photo.add(INDEX_PHOTO_NUMBER, photoNumber);
     }
 
     public Bitmap getImage(){
@@ -32,7 +30,4 @@ public class Photo {
         return (String) photo.get(INDEX_DESCRIPTION);
     }
 
-    public int getImgNumber(){
-        return (int) photo.get(INDEX_PHOTO_NUMBER);
-    }
 }

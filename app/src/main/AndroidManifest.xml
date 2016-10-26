@@ -29,7 +29,8 @@
 
         <activity
             android:name=".AnalizePhoto"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateVisible">
         </activity>
 
     </application>

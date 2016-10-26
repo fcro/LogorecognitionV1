@@ -56,7 +56,6 @@ public class TakePhotoActivity extends Activity {
 
             Intent resultIntent = new Intent();
             resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, Uri.fromFile(getCameraFile()));
-            resultIntent.putExtra(MainActivity.KEY_PHOTO_NUMBER, mPhotoNumber);
             setResult(RESULT_OK, resultIntent);
             finish();
         } else {
