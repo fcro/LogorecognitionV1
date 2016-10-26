@@ -126,10 +126,11 @@ public class MainActivity extends AppCompatActivity {
 
         } else if (requestCode == TAKE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
             Log.d(TAG, "onActivityResult: take photo & canceled");
-            toast(getString(R.string.toast_photo_ok));
+            toast(getString(R.string.toast_photo_cancelled));
+
         } else if (requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_OK) {
             Log.d(TAG, "onActivityResult: analyse & ok");
-            toast(getString(R.string.toast_photo_cancelled));
+
 
             Bundle b = data.getExtras();
             Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 mImageDescription.setText(description);
 
                 mArrayPhoto.add(new Photo(bitmap, description, photoNumber));
+                toast(getString(R.string.toast_photo_ok));
             } catch (IOException e) {
                 e.printStackTrace();
             }
