@@ -30,8 +30,8 @@ public class AnalizePhoto extends Activity {
         final Uri imgPath = b.getParcelable(MainActivity.KEY_PHOTO_PATH);
         final int photoNumber = b.getInt(MainActivity.KEY_PHOTO_NUMBER);
 
-        Log.d(TAG, "onCreate: uri = "+imgPath.toString());
-        Log.d(TAG, "onCreate: photonumber ="+photoNumber);
+        Log.d(TAG, "onCreate: uri = " + imgPath.toString());
+        Log.d(TAG, "onCreate: photonumber =" + photoNumber);
 
         final EditText editText = (EditText) findViewById(R.id.text_description);
         Button button = (Button) findViewById(R.id.button_description_ok);
@@ -41,16 +41,15 @@ public class AnalizePhoto extends Activity {
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
 
-                if(editText.getText().toString().equals("")){
+                if (editText.getText().toString().equals("")) {
                     setResult(RESULT_CANCELED, resultIntent);
-                }
-                else{
+                } else {
                     resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
                     resultIntent.putExtra(MainActivity.KEY_PHOTO_DESCRIPTION, editText.getText().toString());
                     resultIntent.putExtra(MainActivity.KEY_PHOTO_NUMBER, photoNumber);
                     setResult(RESULT_OK, resultIntent);
                 }
-                Log.d(TAG, "onClick: text = "+editText.getText().toString());
+                Log.d(TAG, "onClick: text = " + editText.getText().toString());
                 finish();
             }
         });

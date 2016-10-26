@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult() called with: requestCode = [" + requestCode + "], resultCode = [" + resultCode + "], data = [" + data + "]");
@@ -125,12 +124,12 @@ public class MainActivity extends AppCompatActivity {
 
             startAnalyze(imgPath, photoNumber);
 
-        }else if (requestCode == TAKE_PHOTO_REQUEST && resultCode == RESULT_CANCELED){
+        } else if (requestCode == TAKE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
             Log.d(TAG, "onActivityResult: take photo & canceled");
-            toast("Photo not take");
-        }else if(requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_OK){
+            toast(getString(R.string.toast_photo_ok));
+        } else if (requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_OK) {
             Log.d(TAG, "onActivityResult: analyse & ok");
-            toast("ok");
+            toast(getString(R.string.toast_photo_cancelled));
 
             Bundle b = data.getExtras();
             Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             int photoNumber = b.getInt(KEY_PHOTO_NUMBER);
 
 
-            try{
+            try {
                 Bitmap bitmap =
                         Utils.scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
@@ -147,15 +146,15 @@ public class MainActivity extends AppCompatActivity {
                 mImageDescription.setText(description);
 
                 mArrayPhoto.add(new Photo(bitmap, description, photoNumber));
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else if(requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_CANCELED){
+        } else if (requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
             toast("analyze not ok");
         }
     }
 
-    private void startAnalyze(Uri uri, int imgNumber){
+    private void startAnalyze(Uri uri, int imgNumber) {
 
         Intent startAnalyze = new Intent(MainActivity.this, AnalizePhoto.class);
 

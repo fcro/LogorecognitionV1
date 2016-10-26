@@ -8,4 +8,6 @@
     <string name="photo_ok">Photo Ok</string>
     <string name="description">Description</string>
     <string name="ok_Button">Description ok</string>
+    <string name="toast_photo_ok">Photo taken and added</string>
+    <string name="toast_photo_cancelled">Photo not taken</string>
 </resources>
