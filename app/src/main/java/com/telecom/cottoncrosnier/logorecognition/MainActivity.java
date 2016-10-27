@@ -14,8 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -32,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int GALLERY_IMAGE_REQUEST = 2;
     private final static int ANALYZE_PHOTO_REQUEST = 3;
 
-    private ImageView mMainImage;
-    private TextView mImageDescription;
+    private ListView photoListView;
+    private ArrayAdapter<Photo> photoAdapter;
 
     private ArrayList<Photo> mArrayPhoto;
 
@@ -67,9 +68,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mMainImage = (ImageView) findViewById(R.id.main_image);
-        mImageDescription = (TextView) findViewById(R.id.image_details_text);
-        mArrayPhoto = new ArrayList<>();
+        mArrayPhoto = new ArrayList<Photo>();
+        photoListView = (ListView) findViewById(R.id.img_list_view);
+        photoAdapter = new PhotoArrayAdapter(this, R.layout.listview_row,
+                mArrayPhoto);
+        photoListView.setAdapter(photoAdapter);
     }
 
     @Override
@@ -150,11 +153,9 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap bitmap =
                         Utils.scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
-                                3000);
-                mMainImage.setImageBitmap(bitmap);
-                mImageDescription.setText(description);
+                                300);
 
-                mArrayPhoto.add(new Photo(bitmap, description));
+                addImage(new Photo(bitmap, description));
                 toast(getString(R.string.toast_photo_ok));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -178,4 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
     }
 
+    private void addImage(Photo photo) {
+        photoAdapter.add(photo);
+    }
 }
