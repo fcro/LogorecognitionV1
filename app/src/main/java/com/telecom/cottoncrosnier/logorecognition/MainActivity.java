@@ -169,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
             toast("analyze not ok");
         } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_OK) {
             toast("view web site ok");
+        } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_CANCELED) {
+            toast("Brand unknown");
         }
     }
 
