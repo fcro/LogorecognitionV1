@@ -29,7 +29,6 @@ public class TakePhotoActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.take_photo_activity);
         startCamera();
     }
 

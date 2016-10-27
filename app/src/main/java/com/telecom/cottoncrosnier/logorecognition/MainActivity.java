@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,9 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private final static int TAKE_PHOTO_REQUEST = 1;
     private static final int GALLERY_IMAGE_REQUEST = 2;
     private final static int ANALYZE_PHOTO_REQUEST = 3;
+    private final static int VIEW_BROWSER_REQUEST = 4;
 
     private ListView photoListView;
     private ArrayAdapter<Photo> photoAdapter;
+    private Button mWebSiteButton;
 
     private ArrayList<Photo> mArrayPhoto;
 
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         photoAdapter = new PhotoArrayAdapter(this, R.layout.listview_row,
                 mArrayPhoto);
         photoListView.setAdapter(photoAdapter);
+        mWebSiteButton = (Button) findViewById(R.id.button_website);
     }
 
     @Override
@@ -157,11 +160,15 @@ public class MainActivity extends AppCompatActivity {
 
                 addImage(new Photo(bitmap, description));
                 toast(getString(R.string.toast_photo_ok));
+
+                initWebSiteButton(description);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if (requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
             toast("analyze not ok");
+        } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_OK) {
+            toast("view web site ok");
         }
     }
 
@@ -182,4 +189,18 @@ public class MainActivity extends AppCompatActivity {
     private void addImage(Photo photo) {
         photoAdapter.add(photo);
     }
+
+    private void initWebSiteButton(final String descritpion) {
+
+        mWebSiteButton.setVisibility(View.VISIBLE);
+        mWebSiteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startWebBrowser = new Intent(MainActivity.this, LaunchBrowserActivity.class);
+                startWebBrowser.putExtra(KEY_PHOTO_DESCRIPTION, descritpion);
+                startActivityForResult(startWebBrowser, VIEW_BROWSER_REQUEST);
+            }
+        });
+    }
+
 }
