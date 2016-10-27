@@ -40,7 +40,7 @@ public class LaunchBrowserActivity extends Activity {
     private void findWebSite(String descritpion) {
 
         int index = 0;
-        String webSite;
+        String webSite = "";
         for (String brand : Consts.brand) {
             if (brand.equals(descritpion)) {
                 webSite = Consts.webSiteBrand[index];
@@ -48,6 +48,10 @@ public class LaunchBrowserActivity extends Activity {
                 return;
             }
             index++;
+        }
+        if (webSite.equals("")) {
+            setResult(RESULT_CANCELED);
+            finish();
         }
     }
 
