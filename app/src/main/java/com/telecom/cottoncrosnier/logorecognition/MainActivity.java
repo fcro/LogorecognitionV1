@@ -3,6 +3,7 @@ package com.telecom.cottoncrosnier.logorecognition;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int ANALYZE_PHOTO_REQUEST = 3;
     private final static int VIEW_BROWSER_REQUEST = 4;
 
-    private static final int INVALID_POSITION = 1111;
+    private static final int INVALID_POSITION = -1;
 
     private ListView mPhotoListView;
     private ArrayAdapter<Photo> mPhotoAdapter;
@@ -176,6 +177,18 @@ public class MainActivity extends AppCompatActivity {
         mPhotoAdapter.add(photo);
     }
 
+    private void colorRow(AdapterView<?> adapter, View row, int position) {
+        for (int i = 0; i < adapter.getCount(); ++i) {
+            if (i != position) {
+                Log.d(TAG, "colorRow:: adapter.getChildAt(" + i + ") = " +
+                        adapter.getChildAt(i).getClass().getCanonicalName());
+                adapter.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
+
+        row.setBackgroundColor(Color.argb(50, 0, 0, 90));
+    }
+
     private void initWebSiteButton() {
         mWebSiteButton = (Button) findViewById(R.id.button_website);
         mWebSiteButton.setVisibility(View.VISIBLE);
@@ -202,8 +215,10 @@ public class MainActivity extends AppCompatActivity {
         mPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemClick: position = [" + position + "] view = [" +
+                        view.getClass().getCanonicalName() + "]");
                 mId = position;
-                Log.d(TAG, "onItemClick: position = " + position);
+                colorRow(parent, view, mId);
             }
         });
     }
