@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -34,9 +35,13 @@ public class MainActivity extends AppCompatActivity {
     private final static int ANALYZE_PHOTO_REQUEST = 3;
     private final static int VIEW_BROWSER_REQUEST = 4;
 
-    private ListView photoListView;
-    private ArrayAdapter<Photo> photoAdapter;
+    private static final int INVALID_POSITION = 1111;
+
+    private ListView mPhotoListView;
+    private ArrayAdapter<Photo> mPhotoAdapter;
     private Button mWebSiteButton;
+
+    private int mId;
 
     private ArrayList<Photo> mArrayPhoto;
 
@@ -47,35 +52,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder
-                        .setMessage(R.string.dialog_select_prompt)
-                        .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startGalleryChooser();
-                            }
-                        })
-                        .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startCamera();
-                            }
-                        });
-                builder.create().show();
-            }
-        });
+        initFloatingButton();
 
-        mArrayPhoto = new ArrayList<Photo>();
-        photoListView = (ListView) findViewById(R.id.img_list_view);
-        photoAdapter = new PhotoArrayAdapter(this, R.layout.listview_row,
+        mArrayPhoto = new ArrayList<>();
+        mPhotoAdapter = new PhotoArrayAdapter(this, R.layout.listview_row,
                 mArrayPhoto);
-        photoListView.setAdapter(photoAdapter);
-        mWebSiteButton = (Button) findViewById(R.id.button_website);
+
+        initListView();
+
     }
 
     @Override
@@ -99,20 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void startGalleryChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select a photo"),
-                GALLERY_IMAGE_REQUEST);
-    }
-
-    public void startCamera() {
-        Intent startTakePhoto = new Intent(MainActivity.this, TakePhotoActivity.class);
-        startActivityForResult(startTakePhoto, TAKE_PHOTO_REQUEST);
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -161,17 +131,31 @@ public class MainActivity extends AppCompatActivity {
                 addImage(new Photo(bitmap, description));
                 toast(getString(R.string.toast_photo_ok));
 
-                initWebSiteButton(description);
+                initWebSiteButton();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if (requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
             toast("analyze not ok");
         } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_OK) {
-            toast("view web site ok");
+//            toast("view web site ok");
+            Log.d(TAG, "onActivityResult: view web site ok");
         } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_CANCELED) {
             toast("Brand unknown");
         }
+    }
+
+    public void startGalleryChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select a photo"),
+                GALLERY_IMAGE_REQUEST);
+    }
+
+    public void startCamera() {
+        Intent startTakePhoto = new Intent(MainActivity.this, TakePhotoActivity.class);
+        startActivityForResult(startTakePhoto, TAKE_PHOTO_REQUEST);
     }
 
     private void startAnalyze(Uri uri) {
@@ -189,18 +173,62 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addImage(Photo photo) {
-        photoAdapter.add(photo);
+        mPhotoAdapter.add(photo);
     }
 
-    private void initWebSiteButton(final String descritpion) {
-
+    private void initWebSiteButton() {
+        mWebSiteButton = (Button) findViewById(R.id.button_website);
         mWebSiteButton.setVisibility(View.VISIBLE);
         mWebSiteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startWebBrowser = new Intent(MainActivity.this, LaunchBrowserActivity.class);
-                startWebBrowser.putExtra(KEY_PHOTO_DESCRIPTION, descritpion);
-                startActivityForResult(startWebBrowser, VIEW_BROWSER_REQUEST);
+                if (mId != INVALID_POSITION) {
+                    Intent startWebBrowser = new Intent(MainActivity.this, LaunchBrowserActivity.class);
+                    startWebBrowser.putExtra(KEY_PHOTO_DESCRIPTION, mPhotoAdapter.getItem(mId).getDescription());
+                    startActivityForResult(startWebBrowser, VIEW_BROWSER_REQUEST);
+                } else {
+                    toast("please select an item");
+                }
+                mId = INVALID_POSITION;
+
+            }
+        });
+    }
+
+    private void initListView() {
+        mId = INVALID_POSITION;
+        mPhotoListView = (ListView) findViewById(R.id.img_list_view);
+        mPhotoListView.setAdapter(mPhotoAdapter);
+        mPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mId = position;
+                Log.d(TAG, "onItemClick: position = " + position);
+            }
+        });
+    }
+
+    private void initFloatingButton() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder
+                        .setMessage(R.string.dialog_select_prompt)
+                        .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startGalleryChooser();
+                            }
+                        })
+                        .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startCamera();
+                            }
+                        });
+                builder.create().show();
             }
         });
     }
