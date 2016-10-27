@@ -15,7 +15,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,18 +28,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Use the floating action button to select an image."/>
+                android:text="@string/use_the_floating_action_button_to_select_an_image" />
 
             <ImageView
                 android:id="@+id/main_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter"
+                android:contentDescription=""
+                tools:ignore="ContentDescription" />
             <TextView
                 android:id="@+id/image_details_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp" />
+
+            <Button
+                android:text="@string/view_web_site"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_website"
+                android:visibility="invisible" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
