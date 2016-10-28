@@ -14,11 +14,21 @@
     tools:showIn="@layout/activity_main">
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
         android:id="@+id/img_list_view"
+        android:layout_above="@+id/button_website"
         android:choiceMode="singleChoice" />
+
+    <Button
+        android:text="@string/view_web_site"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_website"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="false"
+        android:visibility="invisible" />
 
 </RelativeLayout>
