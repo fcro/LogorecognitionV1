@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView mPhotoListView;
     private ArrayAdapter<Photo> mPhotoAdapter;
-    private Button mWebSiteButton;
+//    private Button mWebSiteButton;
 
     private int mId;
 
@@ -76,9 +76,15 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Log.d(TAG, "onOptionsItemSelected: id = " + id);
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.view_map) {
+            Log.d(TAG, "onOptionsItemSelected: view map");
+            Intent startTakePhoto = new Intent(MainActivity.this, MapActivity.class);
+            startActivityForResult(startTakePhoto, 10);
+            return true;
+        } else if (id == R.id.view_website) {
+            startBrowser();
             return true;
         }
 
@@ -132,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
                 addImage(new Photo(bitmap, description));
                 toast(getString(R.string.toast_photo_ok));
 
-                initWebSiteButton();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -159,18 +164,29 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(startTakePhoto, TAKE_PHOTO_REQUEST);
     }
 
+
     private void startAnalyze(Uri uri) {
 
         Intent startAnalyze = new Intent(MainActivity.this, AnalizePhoto.class);
-
         startAnalyze.putExtra(KEY_PHOTO_PATH, uri);
-
         startActivityForResult(startAnalyze, ANALYZE_PHOTO_REQUEST);
+    }
+
+    private void startBrowser() {
+        Log.d(TAG, "onOptionsItemSelected: view website");
+        if (mId != INVALID_POSITION) {
+            Intent startWebBrowser = new Intent(MainActivity.this, LaunchBrowserActivity.class);
+            startWebBrowser.putExtra(KEY_PHOTO_DESCRIPTION, mPhotoAdapter.getItem(mId).getDescription());
+            startActivityForResult(startWebBrowser, VIEW_BROWSER_REQUEST);
+        } else {
+            toast("please select an item");
+        }
+        mId = INVALID_POSITION;
     }
 
     private void toast(String text) {
         Toast.makeText(this, text,
-                Toast.LENGTH_LONG).show();
+                Toast.LENGTH_SHORT).show();
     }
 
     private void addImage(Photo photo) {
@@ -187,25 +203,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         row.setBackgroundColor(Color.argb(50, 0, 0, 90));
-    }
-
-    private void initWebSiteButton() {
-        mWebSiteButton = (Button) findViewById(R.id.button_website);
-        mWebSiteButton.setVisibility(View.VISIBLE);
-        mWebSiteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mId != INVALID_POSITION) {
-                    Intent startWebBrowser = new Intent(MainActivity.this, LaunchBrowserActivity.class);
-                    startWebBrowser.putExtra(KEY_PHOTO_DESCRIPTION, mPhotoAdapter.getItem(mId).getDescription());
-                    startActivityForResult(startWebBrowser, VIEW_BROWSER_REQUEST);
-                } else {
-                    toast("please select an item");
-                }
-                mId = INVALID_POSITION;
-
-            }
-        });
     }
 
     private void initListView() {
@@ -249,3 +246,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+
+
+

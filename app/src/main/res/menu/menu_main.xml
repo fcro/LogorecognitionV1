@@ -7,4 +7,14 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/view_map"
+        android:orderInCategory="100"
+        android:title="view map"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/view_website"
+        android:orderInCategory="100"
+        android:title="@string/view_web_site"
+        app:showAsAction="never" />
 </menu>
