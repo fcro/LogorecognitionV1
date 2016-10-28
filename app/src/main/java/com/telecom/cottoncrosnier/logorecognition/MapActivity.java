@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,8 +25,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     private GoogleMap mMap;
 
-    private static final float HUE_IABLUE = 200.0f;
-    LatLng latLng = new LatLng(48.756242, -3.453329);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +49,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng latLng = new LatLng(48.756242, -3.453329);
-
-        mMap.addMarker(new MarkerOptions().position(latLng).title("test"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        for (int i = 0; i < Consts.cityName.length - 1; i++) {
+            mMap.addMarker(new MarkerOptions().position(Consts.cityPosition[i]).title(Consts.cityName[i]));
+        }
     }
 }

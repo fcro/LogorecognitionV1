@@ -14,4 +14,5 @@
     <string name="view_web_site">View web Site</string>
     <string name="use_the_floating_action_button_to_select_an_image">Use the floating action button to select an image.</string>
     <string name="view_map">view map</string>
+    <string name="wait_lacalisation">wait localisation</string>
 </resources>

@@ -17,9 +17,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,17 +31,19 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String KEY_PHOTO_PATH = "key_photo";
     public static final String KEY_PHOTO_DESCRIPTION = "key_description";
+    public static final String KEY_PHOTO_POSITION = "key_photo_position";
 
     private final static int TAKE_PHOTO_REQUEST = 1;
     private static final int GALLERY_IMAGE_REQUEST = 2;
     private final static int ANALYZE_PHOTO_REQUEST = 3;
     private final static int VIEW_BROWSER_REQUEST = 4;
+    private final static int MAP_REQUEST = 5;
 
     private static final int INVALID_POSITION = -1;
 
     private ListView mPhotoListView;
+
     private ArrayAdapter<Photo> mPhotoAdapter;
-//    private Button mWebSiteButton;
 
     private int mId;
 
@@ -80,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.view_map) {
             Log.d(TAG, "onOptionsItemSelected: view map");
-            Intent startTakePhoto = new Intent(MainActivity.this, MapActivity.class);
-            startActivityForResult(startTakePhoto, 10);
+            startMap();
             return true;
         } else if (id == R.id.view_website) {
             startBrowser();
@@ -127,15 +129,14 @@ public class MainActivity extends AppCompatActivity {
             Bundle b = data.getExtras();
             Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
             String description = b.getString(KEY_PHOTO_DESCRIPTION);
-
-
+            LatLng position = b.getParcelable(KEY_PHOTO_POSITION);
             try {
                 Bitmap bitmap =
                         Utils.scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
                                 300);
 
-                addImage(new Photo(bitmap, description));
+                addImage(new Photo(bitmap, description, position));
                 toast(getString(R.string.toast_photo_ok));
 
             } catch (IOException e) {
@@ -166,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void startAnalyze(Uri uri) {
-
         Intent startAnalyze = new Intent(MainActivity.this, AnalizePhoto.class);
         startAnalyze.putExtra(KEY_PHOTO_PATH, uri);
         startActivityForResult(startAnalyze, ANALYZE_PHOTO_REQUEST);
@@ -184,12 +184,18 @@ public class MainActivity extends AppCompatActivity {
         mId = INVALID_POSITION;
     }
 
+    private void startMap() {
+        Intent startMap = new Intent(MainActivity.this, MapActivity.class);
+        startActivityForResult(startMap, MAP_REQUEST);
+    }
+
     private void toast(String text) {
         Toast.makeText(this, text,
                 Toast.LENGTH_SHORT).show();
     }
 
     private void addImage(Photo photo) {
+        Log.d(TAG, "addImage() called with: photo = [" + photo.toString() + "]");
         mPhotoAdapter.add(photo);
     }
 
