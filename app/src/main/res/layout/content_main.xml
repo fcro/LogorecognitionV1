@@ -19,7 +19,8 @@
         android:layout_alignParentTop="true"
         android:id="@+id/img_list_view"
         android:layout_above="@+id/button_website"
-        android:choiceMode="singleChoice" />
+        android:choiceMode="singleChoice"
+        android:divider="@null" />
 
     <Button
         android:text="@string/view_web_site"

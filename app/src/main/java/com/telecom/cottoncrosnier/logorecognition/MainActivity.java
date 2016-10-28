@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        row.setBackgroundColor(Color.argb(50, 0, 0, 90));
+        row.setBackgroundResource(R.drawable.rounded_bg);
     }
 
     private void initWebSiteButton() {
