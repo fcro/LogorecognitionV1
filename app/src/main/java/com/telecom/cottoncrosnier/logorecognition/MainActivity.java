@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.view_website) {
             startBrowser();
             return true;
+        } else if (id == R.id.delete_photo) {
+            deletePhoto();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -249,6 +252,14 @@ public class MainActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
+    }
+
+    private void deletePhoto() {
+        if (mId != INVALID_POSITION) {
+            mPhotoAdapter.remove(mArrayPhoto.get(mId));
+            return;
+        }
+        toast("please select an item");
     }
 
 }
