@@ -34,7 +34,7 @@ public class AnalizePhoto extends Activity {
     private ListView mListView;
     private ArrayAdapter<String> mCityNameAdapter;
     private int mId;
-    private Geolocalisation mGeo;
+    private Geolocation mGeo;
     private Button mButton;
     private boolean mIsLocated;
     private Timer mTimer;
@@ -50,7 +50,7 @@ public class AnalizePhoto extends Activity {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION)) {
             mLatLng = null;
-            mGeo = new Geolocalisation(this);
+            mGeo = new Geolocation(this);
             mGeo.startGeo();
         }
 
@@ -72,7 +72,7 @@ public class AnalizePhoto extends Activity {
 
         if (Utils.permissionGranted(requestCode, 0, grantResults)) {
             Log.d(TAG, "onRequestPermissionsResult: permissionGranted");
-            mGeo = new Geolocalisation(this);
+            mGeo = new Geolocation(this);
             mGeo.startGeo();
         }
     }

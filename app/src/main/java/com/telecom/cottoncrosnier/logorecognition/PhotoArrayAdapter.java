@@ -17,9 +17,9 @@ import java.util.ArrayList;
 
 public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
-    Context context;
-    int layoutResourceId;
-    ArrayList<Photo> photoArrayList;
+    private Context context;
+    private int layoutResourceId;
+    private ArrayList<Photo> photoArrayList;
 
     public PhotoArrayAdapter(Context context, int layoutResourceId,
                              ArrayList<Photo> photoArrayList) {
@@ -32,7 +32,7 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        PhotoHolder holder = null;
+        PhotoHolder holder;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -54,7 +54,7 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
         return row;
     }
 
-    static class PhotoHolder {
+    private static class PhotoHolder {
         ImageView photoImage;
         TextView photoDescription;
     }

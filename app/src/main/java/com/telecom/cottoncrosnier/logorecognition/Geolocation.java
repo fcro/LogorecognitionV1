@@ -18,9 +18,9 @@ import static android.content.Context.LOCATION_SERVICE;
  * Created by matthieu on 28/10/16.
  */
 
-public class Geolocalisation implements LocationListener {
+public class Geolocation implements LocationListener {
 
-    private static String TAG = Geolocalisation.class.getSimpleName();
+    private static String TAG = Geolocation.class.getSimpleName();
     private LocationManager mLocationManager;
     private Context mContext;
 
@@ -31,8 +31,8 @@ public class Geolocalisation implements LocationListener {
     private LatLng mLatLng;
 
 
-    public Geolocalisation(Context context) {
-        Log.d(TAG, "Geolocalisation: ");
+    public Geolocation(Context context) {
+        Log.d(TAG, "Geolocation: ");
         mContext = context;
     }
 
