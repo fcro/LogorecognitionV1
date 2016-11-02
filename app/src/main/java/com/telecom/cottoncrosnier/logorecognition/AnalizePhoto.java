@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -68,14 +69,10 @@ public class AnalizePhoto extends Activity {
         final Uri imgPath = b.getParcelable(MainActivity.KEY_PHOTO_PATH);
         mTimer = checkIfIsLocated(); // regarde si on est localisé
 
-        mLatLng = getLatLngFromExif(this, imgPath);
-        if (mLatLng != null) {
-            mAddress = getAddressFromLatLng(mLatLng);
-        }
-
         initListView();
         initButton(imgPath);
 
+        new ExifAddressTask(this, new ExifResultListener()).execute(imgPath);
     }
 
 
@@ -151,9 +148,6 @@ public class AnalizePhoto extends Activity {
         for (String s : Consts.cityName) {
             mCityNameAdapter.add(s);
         }
-        if (mAddress != null) {
-            mCityNameAdapter.add(mAddress.getLocality());
-        }
         mListView.setAdapter(mCityNameAdapter);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -207,51 +201,6 @@ public class AnalizePhoto extends Activity {
         mHandlerMessage.sendMessage(msg);
     }
 
-    public LatLng getLatLngFromExif(Context context, Uri uri) {
-        double[] d_latLng = new double[2];
-        LatLng latLng = null;
-
-        String[] attributes = {MediaStore.Images.ImageColumns.LATITUDE,
-                MediaStore.Images.ImageColumns.LONGITUDE};
-
-        Cursor cursor = context.getContentResolver().query(uri, attributes, null, null, null);
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-            d_latLng[0] = cursor.getDouble(cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.LATITUDE));
-            d_latLng[1] = cursor.getDouble(cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.LONGITUDE));
-            Log.d(TAG, "latlng = " + d_latLng[0] + " , " + d_latLng[1]);
-
-            latLng = new LatLng(d_latLng[0], d_latLng[1]);
-            cursor.close();
-
-        } else {
-            Log.d(TAG, "cursor null");
-        }
-
-        return latLng;
-    }
-
-    public Address getAddressFromLatLng(LatLng latLng) {
-        Geocoder gcd;
-        List<Address> addresses;
-        Address address = null;
-
-        try {
-            gcd = new Geocoder(this);
-            addresses = gcd.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            if (addresses != null && addresses.size() > 0) {
-                address = addresses.get(0);
-                Log.d(TAG, "getLatLngFromExif: address = " + address.getLocality()
-                        + ", " + address.getCountryName());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return address;
-    }
-
     // sert a changer le texte une fois le check réalisé
     protected final Handler mHandlerMessage = new Handler() {
         public void handleMessage(Message msg) {
@@ -263,4 +212,95 @@ public class AnalizePhoto extends Activity {
             }
         }
     };
+
+
+
+
+
+    private class ExifResultListener {
+        private void onResultSucceeded(Address address) {
+            if (address != null) {
+                mAddress = address;
+                mLatLng = new LatLng(mAddress.getLatitude(), mAddress.getLongitude());
+                mCityNameAdapter.add(mAddress.getLocality());
+            }
+        }
+    }
+
+
+    private class ExifAddressTask extends AsyncTask<Uri, Long, Address> {
+
+        private Context mAnalizePhotoContext;
+        private ExifResultListener mListener;
+        private Uri mImgPath;
+        private LatLng mLatLng;
+        private Address mAddress;
+
+        private ExifAddressTask(Context context, ExifResultListener listener) {
+            mAnalizePhotoContext = context;
+            mListener = listener;
+        }
+
+        @Override
+        protected Address doInBackground(Uri... params) {
+            mImgPath = params[0];
+
+            mLatLng = getLatLngFromExif();
+
+            if (mLatLng != null) {
+                mAddress = getAddressFromLatLng();
+            }
+            return mAddress;
+        }
+
+        private LatLng getLatLngFromExif() {
+            double[] d_latLng = new double[2];
+            LatLng latLng = null;
+
+            String[] attributes = {MediaStore.Images.ImageColumns.LATITUDE,
+                    MediaStore.Images.ImageColumns.LONGITUDE};
+
+            Cursor cursor = mAnalizePhotoContext.getContentResolver().query(mImgPath, attributes, null, null, null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                d_latLng[0] = cursor.getDouble(cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.LATITUDE));
+                d_latLng[1] = cursor.getDouble(cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.LONGITUDE));
+                Log.d(TAG, "latlng = " + d_latLng[0] + " , " + d_latLng[1]);
+
+                latLng = new LatLng(d_latLng[0], d_latLng[1]);
+                cursor.close();
+
+            } else {
+                Log.d(TAG, "cursor null");
+            }
+
+            return latLng;
+        }
+
+        private Address getAddressFromLatLng() {
+            Geocoder gcd;
+            List<Address> addresses;
+            Address address = null;
+
+            try {
+                gcd = new Geocoder(mAnalizePhotoContext);
+                addresses = gcd.getFromLocation(mLatLng.latitude, mLatLng.longitude, 1);
+                if (addresses != null && addresses.size() > 0) {
+                    address = addresses.get(0);
+                    Log.d(TAG, "getLatLngFromExif: address = " + address.getLocality()
+                            + ", " + address.getCountryName());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return address;
+        }
+
+        @Override
+        protected void onPostExecute(Address address) {
+            mListener.onResultSucceeded(address);
+        }
+    }
 }
