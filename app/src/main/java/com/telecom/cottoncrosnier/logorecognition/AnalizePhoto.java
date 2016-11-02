@@ -2,11 +2,16 @@ package com.telecom.cottoncrosnier.logorecognition;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +23,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,6 +46,7 @@ public class AnalizePhoto extends Activity {
     private boolean mIsLocated;
     private Timer mTimer;
     private LatLng mLatLng;
+    private Address mAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +68,13 @@ public class AnalizePhoto extends Activity {
         final Uri imgPath = b.getParcelable(MainActivity.KEY_PHOTO_PATH);
         mTimer = checkIfIsLocated(); // regarde si on est localisé
 
+        mLatLng = getLatLngFromExif(this, imgPath);
+        if (mLatLng != null) {
+            mAddress = getAddressFromLatLng(mLatLng);
+        }
+
         initListView();
-        initButtuon(imgPath);
+        initButton(imgPath);
 
     }
 
@@ -84,7 +97,7 @@ public class AnalizePhoto extends Activity {
         mGeo.stopGeo();
     }
 
-    private void initButtuon(final Uri imgPath) {
+    private void initButton(final Uri imgPath) {
         final EditText editText = (EditText) findViewById(R.id.text_description);
         mButton = (Button) findViewById(R.id.button_description_ok);
 
@@ -95,7 +108,7 @@ public class AnalizePhoto extends Activity {
 
                 if (mId != INVALID_POSITION) {
 
-                    if (Consts.cityName[mId].equals(Consts.cityName[5])) {// a refaire propre
+                    if (mId == 5) {// a refaire propre
                         if (mIsLocated) {
                             resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
                             resultIntent.putExtra(MainActivity.KEY_PHOTO_DESCRIPTION, editText.getText().toString());
@@ -113,7 +126,11 @@ public class AnalizePhoto extends Activity {
                         } else {
                             resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
                             resultIntent.putExtra(MainActivity.KEY_PHOTO_DESCRIPTION, editText.getText().toString());
-                            resultIntent.putExtra(MainActivity.KEY_PHOTO_POSITION, Consts.cityPosition[mId]);
+                            if (mId < Consts.cityPosition.length) {
+                                resultIntent.putExtra(MainActivity.KEY_PHOTO_POSITION, Consts.cityPosition[mId]);
+                            } else {
+                                resultIntent.putExtra(MainActivity.KEY_PHOTO_POSITION, mLatLng);
+                            }
                             setResult(RESULT_OK, resultIntent);
                             finish();
                         }
@@ -134,6 +151,9 @@ public class AnalizePhoto extends Activity {
         for (String s : Consts.cityName) {
             mCityNameAdapter.add(s);
         }
+        if (mAddress != null) {
+            mCityNameAdapter.add(mAddress.getLocality());
+        }
         mListView.setAdapter(mCityNameAdapter);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -141,7 +161,7 @@ public class AnalizePhoto extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mId = i;
                 if (mId == 5 && !mIsLocated) {
-                    mButton.setText(R.string.wait_lacalisation);
+                    mButton.setText(R.string.wait_localisation);
                 } else {
                     mButton.setText(R.string.ok_Button);
                 }
@@ -182,13 +202,58 @@ public class AnalizePhoto extends Activity {
     private void setIsLocated() {
         Log.d(TAG, "setIsLocated: ");
 
-        Message msg = mHandlereMessage.obtainMessage();
+        Message msg = mHandlerMessage.obtainMessage();
         msg.arg1 = 0;
-        mHandlereMessage.sendMessage(msg);
+        mHandlerMessage.sendMessage(msg);
+    }
+
+    public LatLng getLatLngFromExif(Context context, Uri uri) {
+        double[] d_latLng = new double[2];
+        LatLng latLng = null;
+
+        String[] attributes = {MediaStore.Images.ImageColumns.LATITUDE,
+                MediaStore.Images.ImageColumns.LONGITUDE};
+
+        Cursor cursor = context.getContentResolver().query(uri, attributes, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            d_latLng[0] = cursor.getDouble(cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.LATITUDE));
+            d_latLng[1] = cursor.getDouble(cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.LONGITUDE));
+            Log.d(TAG, "latlng = " + d_latLng[0] + " , " + d_latLng[1]);
+
+            latLng = new LatLng(d_latLng[0], d_latLng[1]);
+            cursor.close();
+
+        } else {
+            Log.d(TAG, "cursor null");
+        }
+
+        return latLng;
+    }
+
+    public Address getAddressFromLatLng(LatLng latLng) {
+        Geocoder gcd;
+        List<Address> addresses;
+        Address address = null;
+
+        try {
+            gcd = new Geocoder(this);
+            addresses = gcd.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            if (addresses != null && addresses.size() > 0) {
+                address = addresses.get(0);
+                Log.d(TAG, "getLatLngFromExif: address = " + address.getLocality()
+                        + ", " + address.getCountryName());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return address;
     }
 
     // sert a changer le texte une fois le check réalisé
-    protected final Handler mHandlereMessage = new Handler() {
+    protected final Handler mHandlerMessage = new Handler() {
         public void handleMessage(Message msg) {
             if (msg.arg1 == 0) {
                 Log.d(TAG, "handleMessage: ");
@@ -198,5 +263,4 @@ public class AnalizePhoto extends Activity {
             }
         }
     };
-
 }
