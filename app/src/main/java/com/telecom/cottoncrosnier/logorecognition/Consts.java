@@ -26,7 +26,7 @@ public class Consts {
     public final static String cityName[] = {
             "Paris",
             "New York",
-            "Londre",
+            "Londres",
             "Sydney",
             "Tokyo",
             "Current position"
@@ -35,7 +35,7 @@ public class Consts {
     public final static LatLng cityPosition[] = {
             new LatLng(48.853, 2.35),//paris
             new LatLng(40.7127837, -74.00594130000002),//new york
-            new LatLng(51.5073509, 0.12775829999998223),//londre
+            new LatLng(51.5073509, 0.12775829999998223),//londres
             new LatLng(-33.86563, 151.0236),//sydney
             new LatLng(35.7090259, 139.73199249999993),//tokyo
 
