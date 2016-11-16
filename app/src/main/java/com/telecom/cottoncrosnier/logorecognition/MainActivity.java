@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -134,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
             String description = b.getString(KEY_PHOTO_DESCRIPTION);
             LatLng position = b.getParcelable(KEY_PHOTO_POSITION);
             try {
-                Bitmap bitmap =
-                        Utils.scaleBitmapDown(
-                                MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
-                                300);
+                Bitmap bitmap = ThumbnailUtils.extractThumbnail(
+                        MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
+                        300,
+                        300);
 
                 addImage(new Photo(bitmap, description, position));
                 toast(getString(R.string.toast_photo_ok));
