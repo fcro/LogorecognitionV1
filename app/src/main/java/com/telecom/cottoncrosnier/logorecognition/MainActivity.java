@@ -185,7 +185,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             toast("please select an item");
         }
-        mId = INVALID_POSITION;
     }
 
     private void startMap() {
@@ -256,13 +255,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void deletePhoto() {
-        if (mId != INVALID_POSITION) {
-            mPhotoAdapter.remove(mArrayPhoto.get(mId));
+        if (mId == INVALID_POSITION) {
+            toast("please select an item");
             return;
         }
-        toast("please select an item");
-    }
 
+        mPhotoAdapter.remove(mArrayPhoto.get(mId));
+
+        final int arrayAdapterSize = mArrayPhoto.size();
+        if (arrayAdapterSize <= mId) {
+            if (arrayAdapterSize == 0) {
+                mId = INVALID_POSITION;
+            } else {
+                mId = arrayAdapterSize - 1;
+                mPhotoListView.performItemClick(
+                        mPhotoListView.getChildAt(mId),
+                        mId,
+                        mPhotoListView.getItemIdAtPosition(mId));
+            }
+        }
+    }
 }
 
 
