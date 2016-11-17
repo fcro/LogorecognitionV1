@@ -1,17 +1,11 @@
 package com.telecom.cottoncrosnier.logorecognition.image;
 
-import android.content.Context;
-import android.content.res.AssetManager;
-
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_calib3d;
 import org.bytedeco.javacpp.opencv_core.*;
 import org.bytedeco.javacpp.opencv_nonfree.*;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static org.bytedeco.javacpp.opencv_core.NORM_L2;
 import static org.bytedeco.javacpp.opencv_features2d.*;
@@ -32,7 +26,6 @@ public class CVManager {
     private static final int EDGE_THRESHOLD = 10; // seuil de filtrage des caracteristiques des pointes
     private static final double SIGMA = 1.6; // sigma de la gaussienne (reduire si l'image est de faible resolution)
 
-    private Context mContext;
     private Mat mMat;
     private Mat mDescriptor;
     private SIFT mSift;
@@ -40,15 +33,18 @@ public class CVManager {
     private DMatch mMatches;
 
 
-    public CVManager(Context context) {
-        this.mContext = context;
-        this.mMat = new Mat();
-        this.mDescriptor = new Mat();
+    public CVManager(File file) {
+        this.mMat = imread(file.getAbsolutePath());
         this.mSift = new SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
-        this.mKeyPoints = new KeyPoint();
-        this.mMatches = new DMatch();
+        this.mKeyPoints = null;
+        this.mDescriptor = null;
+        this.mMatches = null;
     }
 
+
+    public Mat getMat() {
+        return mMat;
+    }
 
     public KeyPoint getKeypoints() {
         Loader.load(opencv_calib3d.class);
@@ -68,33 +64,5 @@ public class CVManager {
         matcher.match(mDescriptor, descriptor, mMatches);
 
         return mMatches;
-    }
-
-    public Mat getMat(File file) {
-        mMat = imread(file.getAbsolutePath());
-
-        return mMat;
-    }
-
-    public void assetToFile(String assetPath, File file) {
-        InputStream is;
-        FileOutputStream fos;
-        int size;
-        byte[] buffer;
-        AssetManager assetManager = mContext.getAssets();
-
-        try {
-            is = assetManager.open(assetPath);
-            size = is.available();
-            buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-
-            fos = new FileOutputStream(file);
-            fos.write(buffer);
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

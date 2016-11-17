@@ -2,10 +2,15 @@
 package com.telecom.cottoncrosnier.logorecognition;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -43,5 +48,28 @@ public class Utils {
         return requestCode == permissionCode
                 && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+    }
+
+
+    public static void assetToCache(Context context, String assetPath, String fileName) {
+        InputStream is;
+        FileOutputStream fos;
+        int size;
+        byte[] buffer;
+        AssetManager assetManager = context.getAssets();
+
+        try {
+            is = assetManager.open(assetPath);
+            size = is.available();
+            buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+
+            fos = new FileOutputStream(context.getCacheDir() + "/" + fileName);
+            fos.write(buffer);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
