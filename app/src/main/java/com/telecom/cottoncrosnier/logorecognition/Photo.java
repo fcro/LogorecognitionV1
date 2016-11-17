@@ -4,44 +4,47 @@ import android.graphics.Bitmap;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
-
 /**
  * Created by matthieu on 26/10/16.
  */
 
 public class Photo {
 
-    private ArrayList<Object> photo;
+    private Bitmap mBitmap;
+    private String mBrand;
+    private String mDescription;
+    private LatLng mCoordinates;
 
-    private static final int INDEX_IMG = 0;
-    private static final int INDEX_DESCRIPTION = 1;
-    private static final int INDEX_POSITION = 2;
 
-    public Photo(Bitmap img, String description, LatLng position) {
-        photo = new ArrayList<>(3);
-
-        photo.add(INDEX_IMG, img);
-        photo.add(INDEX_DESCRIPTION, description);
-        photo.add(INDEX_POSITION, position);
+    public Photo(Bitmap bitmap, String brand, String description, LatLng coordinates) {
+        this.mBitmap = bitmap;
+        this.mBrand = brand;
+        this.mDescription = description;
+        this.mCoordinates = coordinates;
     }
 
-    public Bitmap getImage(){
-        return (Bitmap) photo.get(INDEX_IMG);
+
+    public Bitmap getBitmap(){
+        return mBitmap;
+    }
+
+    public String getBrand() {
+        return mBrand;
     }
 
     public String getDescription(){
-        return (String) photo.get(INDEX_DESCRIPTION);
+        return mDescription;
     }
 
-    public LatLng getPosition() {
-        return (LatLng) photo.get(INDEX_POSITION);
+    public LatLng getCoordinates() {
+        return mCoordinates;
     }
 
     public String toString() {
-        return "[image  = " + getImage().toString() +
+        return "[image  = " + getBitmap().toString() +
+                " ; mBrand = " + getBrand() +
                 " ; description = " + getDescription() +
-                " ; position = " + getPosition().toString() + "]";
+                " ; coordinates = " + getCoordinates().toString() + "]";
     }
 
 }
