@@ -1,91 +1,91 @@
 [
-    {
-      "brand": "Apple",
-      "url": "www.apple.com",
-      "imgPrefix": [
-        "apple",
-        "mac"
-      ],
-      "info": "American multinational technology company."
-    }
-	{
-      "brand": "Burger King",
-      "url": "http://www.bk.com/",
-      "imgPrefix": [
-        "burgerking"
-      ],
-      "info": "American global chain of hamburger fast food restaurants."
-    }
-	{
-      "brand": "Facebook",
-      "url": "www.facebook.com",
-      "imgPrefix": [
-        "facebook"
-      ],
-      "info": "American for-profit corporation and online social media and social networking service."
-    }
-	{
-      "brand": "Kentucky Fried Chicken (KFC)",
-      "url": "www.kfc.com",
-      "imgPrefix": [
-        "kfc"
-      ],
-      "info": "American fast food restaurant chain that specializes in fried chicken."
-    }
-	{
-      "brand": "Leffe",
-      "url": "www.leffe.com",
-      "imgPrefix": [
-        "leffe"
-      ],
-      "info": "Belgian premium beer brand."
-    }
-	{
-      "brand": "McDonald's",
-      "url": "www.mcdonalds.com",
-      "imgPrefix": [
-        "mcdonalds"
-      ],
-      "info": "American hamburger and fast food restaurant chain."
-    }
-	{
-      "brand": "Orange",
-      "url": "www.orange.com",
-      "imgPrefix": [
-        "orange"
-      ],
-      "info": "French multinational telecommunications corporation."
-    }
-	{
-      "brand": "Pimkie",
-      "url": "www.pimkie.com",
-      "imgPrefix": [
-        "pimkie"
-      ],
-      "info": "French ready-to-wear fashion brand for women."
-    }
-	{
-      "brand": "Starbucks",
-      "url": "www.starbucks.com",
-      "imgPrefix": [
-        "starbucks"
-      ],
-      "info": "American coffee company and coffeehouse chain."
-    }
-	{
-      "brand": "Telecom Lille",
-      "url": "www.telecom-lille.fr",
-      "imgPrefix": [
-        "telecomlille"
-      ],
-      "info": "Excellent French public engineering school."
-    }
-	{
-      "brand": "Twitter",
-      "url": "www.twitter.com",
-      "imgPrefix": [
-        "twitter"
-      ],
-      "info": "Online news and social networking service."
-    }
+  {
+    "brandName": "Apple",
+    "url": "www.apple.com",
+    "imgPrefix": [
+      "apple",
+      "mac"
+    ],
+    "info": "American multinational technology company."
+  },
+  {
+    "brandName": "Burger King",
+    "url": "http://www.bk.com/",
+    "imgPrefix": [
+      "burgerking"
+    ],
+    "info": "American global chain of hamburger fast food restaurants."
+  },
+  {
+    "brandName": "Facebook",
+    "url": "www.facebook.com",
+    "imgPrefix": [
+      "facebook"
+    ],
+    "info": "American for-profit corporation and online social media and social networking service."
+  },
+  {
+    "brandName": "Kentucky Fried Chicken (KFC)",
+    "url": "www.kfc.com",
+    "imgPrefix": [
+      "kfc"
+    ],
+    "info": "American fast food restaurant chain that specializes in fried chicken."
+  },
+  {
+    "brandName": "Leffe",
+    "url": "www.leffe.com",
+    "imgPrefix": [
+      "leffe"
+    ],
+    "info": "Belgian premium beer brand."
+  },
+  {
+    "brandName": "McDonald's",
+    "url": "www.mcdonalds.com",
+    "imgPrefix": [
+      "mcdonalds"
+    ],
+    "info": "American hamburger and fast food restaurant chain."
+  },
+  {
+    "brandName": "Orange",
+    "url": "www.orange.com",
+    "imgPrefix": [
+      "orange"
+    ],
+    "info": "French multinational telecommunications corporation."
+  },
+  {
+    "brandName": "Pimkie",
+    "url": "www.pimkie.com",
+    "imgPrefix": [
+      "pimkie"
+    ],
+    "info": "French ready-to-wear fashion brand for women."
+  },
+  {
+    "brandName": "Starbucks",
+    "url": "www.starbucks.com",
+    "imgPrefix": [
+      "starbucks"
+    ],
+    "info": "American coffee company and coffeehouse chain."
+  },
+  {
+    "brandName": "Telecom Lille",
+    "url": "www.telecom-lille.fr",
+    "imgPrefix": [
+      "telecomlille"
+    ],
+    "info": "Excellent French public engineering school."
+  },
+  {
+    "brandName": "Twitter",
+    "url": "www.twitter.com",
+    "imgPrefix": [
+      "twitter"
+    ],
+    "info": "Online news and social networking service."
+  }
 ]
