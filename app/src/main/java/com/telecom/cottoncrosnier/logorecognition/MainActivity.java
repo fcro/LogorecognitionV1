@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,9 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    public static final String KEY_PHOTO_PATH = "key_photo";
+    public static final String KEY_PHOTO_PATH = "key_path";
     public static final String KEY_PHOTO_DESCRIPTION = "key_description";
-    public static final String KEY_PHOTO_POSITION = "key_photo_position";
+    public static final String KEY_PHOTO_BRAND = "key_brand";
+    public static final String KEY_PHOTO_COORDINATES = "key_coordinates";
+    public static final String KEY_URL = "key_url";
 
     private final static int TAKE_PHOTO_REQUEST = 1;
     private static final int GALLERY_IMAGE_REQUEST = 2;
@@ -132,15 +135,15 @@ public class MainActivity extends AppCompatActivity {
 
             Bundle b = data.getExtras();
             Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
-            String description = b.getString(KEY_PHOTO_DESCRIPTION);
-            LatLng position = b.getParcelable(KEY_PHOTO_POSITION);
+            Brand brand = (Brand) b.get(KEY_PHOTO_BRAND);
+            LatLng coordinates = b.getParcelable(KEY_PHOTO_COORDINATES);
             try {
                 Bitmap bitmap = ThumbnailUtils.extractThumbnail(
                         MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
                         300,
                         300);
 
-                addImage(new Photo(bitmap, description, position));
+                addImage(new Photo(bitmap, brand, coordinates));
                 toast(getString(R.string.toast_photo_ok));
 
             } catch (IOException e) {
@@ -180,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onOptionsItemSelected: view website");
         if (mId != INVALID_POSITION) {
             Intent startWebBrowser = new Intent(MainActivity.this, LaunchBrowserActivity.class);
-            startWebBrowser.putExtra(KEY_PHOTO_DESCRIPTION, mPhotoAdapter.getItem(mId).getDescription());
+            startWebBrowser.putExtra(KEY_URL, mPhotoAdapter.getItem(mId).getBrand().getUrl());
             startActivityForResult(startWebBrowser, VIEW_BROWSER_REQUEST);
         } else {
             toast("please select an item");

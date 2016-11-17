@@ -3,6 +3,7 @@ package com.telecom.cottoncrosnier.logorecognition;
 import android.graphics.Bitmap;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 
 /**
  * Created by matthieu on 26/10/16.
@@ -11,15 +12,13 @@ import com.google.android.gms.maps.model.LatLng;
 public class Photo {
 
     private Bitmap mBitmap;
-    private String mBrand;
-    private String mDescription;
+    private Brand mBrand;
     private LatLng mCoordinates;
 
 
-    public Photo(Bitmap bitmap, String brand, String description, LatLng coordinates) {
+    public Photo(Bitmap bitmap, Brand brand, LatLng coordinates) {
         this.mBitmap = bitmap;
         this.mBrand = brand;
-        this.mDescription = description;
         this.mCoordinates = coordinates;
     }
 
@@ -28,12 +27,8 @@ public class Photo {
         return mBitmap;
     }
 
-    public String getBrand() {
+    public Brand getBrand() {
         return mBrand;
-    }
-
-    public String getDescription(){
-        return mDescription;
     }
 
     public LatLng getCoordinates() {
@@ -41,9 +36,9 @@ public class Photo {
     }
 
     public String toString() {
-        return "[image  = " + getBitmap().toString() +
+        return "[image = " + getBitmap().toString() +
                 " ; mBrand = " + getBrand() +
-                " ; description = " + getDescription() +
+                " ; description = " + getBrand() +
                 " ; coordinates = " + getCoordinates().toString() + "]";
     }
 

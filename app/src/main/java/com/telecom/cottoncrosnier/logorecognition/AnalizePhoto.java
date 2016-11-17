@@ -109,7 +109,7 @@ public class AnalizePhoto extends Activity {
                         if (mIsLocated) {
                             resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
                             resultIntent.putExtra(MainActivity.KEY_PHOTO_DESCRIPTION, editText.getText().toString());
-                            resultIntent.putExtra(MainActivity.KEY_PHOTO_POSITION, mGeo.getmLatLng());
+                            resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, mGeo.getmLatLng());
 
                             setResult(RESULT_OK, resultIntent);
                             finish();
@@ -124,9 +124,9 @@ public class AnalizePhoto extends Activity {
                             resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
                             resultIntent.putExtra(MainActivity.KEY_PHOTO_DESCRIPTION, editText.getText().toString());
                             if (mId < Consts.cityPosition.length) {
-                                resultIntent.putExtra(MainActivity.KEY_PHOTO_POSITION, Consts.cityPosition[mId]);
+                                resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, Consts.cityPosition[mId]);
                             } else {
-                                resultIntent.putExtra(MainActivity.KEY_PHOTO_POSITION, mLatLng);
+                                resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, mLatLng);
                             }
                             setResult(RESULT_OK, resultIntent);
                             finish();

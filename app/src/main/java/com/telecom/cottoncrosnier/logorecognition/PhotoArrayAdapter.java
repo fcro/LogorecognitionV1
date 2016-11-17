@@ -48,8 +48,8 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
         }
 
         Photo photo = photoArrayList.get(position);
-        holder.photoImage.setImageBitmap(photo.getImage());
-        holder.photoDescription.setText(photo.getDescription());
+        holder.photoImage.setImageBitmap(photo.getBitmap());
+        holder.photoDescription.setText(photo.getBrand().getInfo());
 
         return row;
     }
