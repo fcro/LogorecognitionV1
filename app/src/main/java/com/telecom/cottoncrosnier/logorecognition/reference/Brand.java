@@ -23,19 +23,26 @@ public final class Brand {
     }
 
 
-    public String getmBrandName() {
+    public String getBrandName() {
         return mBrandName;
     }
 
-    public URL getmUrl() {
+    public URL getUrl() {
         return mUrl;
     }
 
-    public List<String> getmImgPrefix() {
+    public List<String> getImgPrefix() {
         return mImgPrefix;
     }
 
-    public String getmInfo() {
+    public String getInfo() {
         return mInfo;
+    }
+
+    public String toString() {
+        return "[brandName = " + mBrandName +
+                "; url = " + mUrl +
+                "; imgPrefix = " + mImgPrefix +
+                "; info = " + mInfo;
     }
 }
