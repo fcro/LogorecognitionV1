@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     public static final String KEY_PHOTO_PATH = "key_path";
-    public static final String KEY_PHOTO_DESCRIPTION = "key_description";
     public static final String KEY_PHOTO_BRAND = "key_brand";
     public static final String KEY_PHOTO_COORDINATES = "key_coordinates";
     public static final String KEY_URL = "key_url";
@@ -194,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onOptionsItemSelected: view website");
         if (mId != INVALID_POSITION) {
             Intent startWebBrowser = new Intent(MainActivity.this, LaunchBrowserActivity.class);
-            startWebBrowser.putExtra(KEY_URL, mPhotoAdapter.getItem(mId).getBrand().getUrl());
+            startWebBrowser.putExtra(KEY_URL, mPhotoAdapter.getItem(mId).getBrand().getUrl().toString());
             startActivityForResult(startWebBrowser, VIEW_BROWSER_REQUEST);
         } else {
             toast("please select an item");

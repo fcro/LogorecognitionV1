@@ -23,9 +23,9 @@ public class LaunchBrowserActivity extends Activity {
 
         final Intent intent = getIntent();
         Bundle b = intent.getExtras();
-        String description = b.getString(MainActivity.KEY_PHOTO_DESCRIPTION);
+        String url = b.getString(MainActivity.KEY_URL);
 
-        findWebSite(description);
+        launchBrowser(url);
     }
 
     @Override
@@ -37,28 +37,10 @@ public class LaunchBrowserActivity extends Activity {
         }
     }
 
-    private void findWebSite(String descritpion) {
-
-        int index = 0;
-        String webSite = "";
-        for (String brand : Consts.brand) {
-            if (brand.equals(descritpion)) {
-                webSite = Consts.webSiteBrand[index];
-                launchBrowser(webSite);
-                return;
-            }
-            index++;
-        }
-        if (webSite.equals("")) {
-            setResult(RESULT_CANCELED);
-            finish();
-        }
-    }
-
-    private void launchBrowser(String webSite) {
-        Log.d(TAG, "launchBrowser() called with: webSite = [" + webSite + "]");
-        toast(webSite);
-        startActivityForResult(new Intent(Intent.ACTION_VIEW, Uri.parse(webSite)), VIEW_BROWSER_REQUEST);
+    private void launchBrowser(String url) {
+        Log.d(TAG, "launchBrowser() called with: url = [" + url + "]");
+        toast(url);
+        startActivityForResult(new Intent(Intent.ACTION_VIEW, Uri.parse(url)), VIEW_BROWSER_REQUEST);
     }
 
     private void toast(String text) {
