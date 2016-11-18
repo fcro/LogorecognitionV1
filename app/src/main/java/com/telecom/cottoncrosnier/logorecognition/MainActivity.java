@@ -23,9 +23,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
+import com.telecom.cottoncrosnier.logorecognition.reference.BrandList;
+import com.telecom.cottoncrosnier.logorecognition.reference.JsonBrandReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        try {
+            BrandList.setBrands(new JsonBrandReader(
+                    Utils.assetToCache(this, "reference/metadata/brands.json", "brands.json"))
+                    .readJsonStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         initFloatingButton();
 
         mArrayPhoto = new ArrayList<>();
@@ -67,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 mArrayPhoto);
 
         initListView();
-
     }
 
     @Override
@@ -135,7 +145,8 @@ public class MainActivity extends AppCompatActivity {
 
             Bundle b = data.getExtras();
             Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
-            Brand brand = (Brand) b.get(KEY_PHOTO_BRAND);
+            Brand brand = (Brand) b.getSerializable(KEY_PHOTO_BRAND);
+            Log.d(TAG, "brand = " + brand.toString());
             LatLng coordinates = b.getParcelable(KEY_PHOTO_COORDINATES);
             try {
                 Bitmap bitmap = ThumbnailUtils.extractThumbnail(

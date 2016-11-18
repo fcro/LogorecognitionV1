@@ -8,6 +8,7 @@ import android.content.res.AssetManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,11 +52,12 @@ public class Utils {
     }
 
 
-    public static void assetToCache(Context context, String assetPath, String fileName) {
+    public static File assetToCache(Context context, String assetPath, String fileName) {
         InputStream is;
         FileOutputStream fos;
         int size;
         byte[] buffer;
+        String filePath = context.getCacheDir() + "/" + fileName;
         AssetManager assetManager = context.getAssets();
 
         try {
@@ -65,11 +67,14 @@ public class Utils {
             is.read(buffer);
             is.close();
 
-            fos = new FileOutputStream(context.getCacheDir() + "/" + fileName);
+            fos = new FileOutputStream(filePath);
             fos.write(buffer);
             fos.close();
+
+            return new File(filePath);
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 }

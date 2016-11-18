@@ -2,6 +2,8 @@ package com.telecom.cottoncrosnier.logorecognition.reference;
 
 import android.util.JsonReader;
 
+import com.telecom.cottoncrosnier.logorecognition.MainActivity;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,7 +34,7 @@ public class JsonBrandReader {
         }
     }
 
-    public List<Brand> readBrandArray() throws IOException {
+    private List<Brand> readBrandArray() throws IOException {
         List<Brand> brands = new ArrayList<Brand>();
 
         mReader.beginArray();
@@ -44,7 +46,7 @@ public class JsonBrandReader {
         return brands;
     }
 
-    public Brand readBrand() throws IOException {
+    private Brand readBrand() throws IOException {
         String brandName = null;
         URL url = null;
         List<String> imgPrefix = null;
@@ -56,7 +58,7 @@ public class JsonBrandReader {
             if (name.equals("brandName")) {
                 brandName = mReader.nextString();
             } else if (name.equals("url")) {
-                url = new URL(mReader.nextString());
+                url = new URL("http://" + mReader.nextString());
             } else if (name.equals("imgPrefix")) {
                 imgPrefix = readStringArray();
             } else if (name.equals("info")) {
@@ -65,11 +67,12 @@ public class JsonBrandReader {
                 throw new IOException("Malformatted metadata file");
             }
         }
+        mReader.endObject();
 
         return new Brand(brandName, url, imgPrefix, info);
     }
 
-    public List<String> readStringArray() throws IOException {
+    private List<String> readStringArray() throws IOException {
         List<String> prefixes = new ArrayList<String>();
 
         mReader.beginArray();

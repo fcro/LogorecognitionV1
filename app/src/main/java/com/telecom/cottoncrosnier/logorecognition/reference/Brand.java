@@ -1,5 +1,6 @@
 package com.telecom.cottoncrosnier.logorecognition.reference;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by User on 17/11/2016.
  */
 
-public final class Brand {
+public class Brand implements Serializable {
 
     private final String mBrandName;
     private final URL mUrl;

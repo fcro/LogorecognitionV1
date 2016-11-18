@@ -23,8 +23,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
+import com.telecom.cottoncrosnier.logorecognition.reference.BrandList;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,6 +53,7 @@ public class AnalizePhoto extends Activity {
     private Timer mTimer;
     private LatLng mLatLng;
     private Address mAddress;
+    private Brand mBrand;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,11 @@ public class AnalizePhoto extends Activity {
             mGeo = new Geolocation(this);
             mGeo.startGeo();
         }
+
+        try {
+            mBrand = new Brand("rien", new URL("http://www.perdu.com"), null, "description");
+            Log.d(TAG, "brand = " + mBrand);
+        } catch (MalformedURLException e) {}
 
         mIsLocated = false;
         final Intent intent = getIntent();
@@ -103,40 +114,39 @@ public class AnalizePhoto extends Activity {
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
 
-                if (mId != INVALID_POSITION) {
+                if (mId == INVALID_POSITION) {
+                    toast("Please select a position");
+                    return;
+                }
 
-                    if (mId == 5) {// a refaire propre
-                        if (mIsLocated) {
-                            resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
-                            resultIntent.putExtra(MainActivity.KEY_PHOTO_DESCRIPTION, editText.getText().toString());
-                            resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, mGeo.getmLatLng());
+                if (editText.getText().toString().equals("")) {
+                    toast("Please enter a description");
+                    return;
+                }
 
-                            setResult(RESULT_OK, resultIntent);
-                            finish();
-                        } else {
-                            toast("please wait localisation");
-                        }
 
+                resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
+                resultIntent.putExtra(MainActivity.KEY_PHOTO_BRAND, mBrand);
+
+                if (mId == mCityNameAdapter.getCount() - 1) {
+                    // dernier item = localisation GPS
+                    if (mIsLocated) {
+                        resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, mGeo.getmLatLng());
                     } else {
-                        if (editText.getText().toString().equals("")) {
-                            setResult(RESULT_CANCELED, resultIntent);
-                        } else {
-                            resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
-                            resultIntent.putExtra(MainActivity.KEY_PHOTO_DESCRIPTION, editText.getText().toString());
-                            if (mId < Consts.cityPosition.length) {
-                                resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, Consts.cityPosition[mId]);
-                            } else {
-                                resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, mLatLng);
-                            }
-                            setResult(RESULT_OK, resultIntent);
-                            finish();
-                        }
+                        toast("please wait for localisation");
+                        return;
                     }
 
                 } else {
-                    toast("please select a position");
+                    if (mId < Consts.cityPosition.length) {
+                        resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, Consts.cityPosition[mId]);
+                    } else {
+                        resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, mLatLng);
+                    }
                 }
 
+                setResult(RESULT_OK, resultIntent);
+                finish();
             }
         });
     }
@@ -154,7 +164,7 @@ public class AnalizePhoto extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mId = i;
-                if (mId == 5 && !mIsLocated) {
+                if (mId == mCityNameAdapter.getCount()-1 && !mIsLocated) {
                     mButton.setText(R.string.wait_localisation);
                 } else {
                     mButton.setText(R.string.ok_Button);
