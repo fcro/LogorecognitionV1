@@ -31,7 +31,7 @@ public class Consts {
             "Tokyo",
             "Current position"
     };
-
+//test
     public final static LatLng cityPosition[] = {
             new LatLng(48.853, 2.35),//paris
             new LatLng(40.7127837, -74.00594130000002),//new york
