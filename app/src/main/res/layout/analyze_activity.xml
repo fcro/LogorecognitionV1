@@ -4,24 +4,6 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/description"
-        android:id="@+id/text_description" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Position : " />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/listView"
-        android:choiceMode="singleChoice"
-        android:layout_weight="0.99" />
-
     <Button
         android:text="@string/ok_Button"
         android:layout_width="wrap_content"
