@@ -69,10 +69,8 @@ public class AnalizePhoto extends Activity {
             mGeo.startGeo();
         }
 
-        try {
-            mBrand = new Brand("rien", new URL("http://www.perdu.com"), null, "description");
-            Log.d(TAG, "brand = " + mBrand);
-        } catch (MalformedURLException e) {}
+        mBrand = BrandList.getBrand("pimkie");
+        Log.d(TAG, "brand = " + mBrand);
 
         mIsLocated = false;
         final Intent intent = getIntent();
