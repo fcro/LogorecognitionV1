@@ -1,5 +1,8 @@
 package com.telecom.cottoncrosnier.logorecognition.image;
 
+import android.net.Uri;
+import android.util.Log;
+
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_calib3d;
 import org.bytedeco.javacpp.opencv_core.*;
@@ -20,6 +23,7 @@ import static org.bytedeco.javacpp.opencv_highgui.*;
 
 public class CVManager {
 
+    private static final String TAG = CVManager.class.getSimpleName();
     private static final int N_FEATURES = 0; // nbr meilleures caracteristiques a retenir
     private static final int N_OCTAVE_LAYERS = 3; // nbr couches dans chaque octave
     private static final double CONTRAST_THRESHOLD = 0.03; // seuil de contraste pour filtrer les caracteristiques faibles en regions semi-uniformes
@@ -33,8 +37,10 @@ public class CVManager {
     private DMatch mMatches;
 
 
-    public CVManager(File file) {
-        this.mMat = imread(file.getAbsolutePath());
+    public CVManager(String path) {
+
+        Log.d(TAG, "CVManager() called with: path = [" + path + "]");
+        this.mMat = imread(path);
         this.mSift = new SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
         this.mKeyPoints = null;
         this.mDescriptor = null;
