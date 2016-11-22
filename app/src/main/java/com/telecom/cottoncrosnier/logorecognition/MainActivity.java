@@ -21,16 +21,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.telecom.cottoncrosnier.logorecognition.image.CVManager;
+
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 import com.telecom.cottoncrosnier.logorecognition.reference.BrandList;
 import com.telecom.cottoncrosnier.logorecognition.reference.JsonBrandReader;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
