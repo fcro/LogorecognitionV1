@@ -38,8 +38,9 @@ public class Photo {
     public String toString() {
         return "[image = " + getBitmap().toString() +
                 " ; mBrand = " + getBrand() +
-                " ; description = " + getBrand() +
-                " ; coordinates = " + getCoordinates().toString() + "]";
+                " ; description = " + getBrand()
+ //               " ; coordinates = " + getCoordinates().toString() + "]";
+        ;
     }
 
 }

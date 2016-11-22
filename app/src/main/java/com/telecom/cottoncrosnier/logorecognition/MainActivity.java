@@ -148,14 +148,14 @@ public class MainActivity extends AppCompatActivity {
             Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
             Brand brand = (Brand) b.getSerializable(KEY_PHOTO_BRAND);
             Log.d(TAG, "brand = " + brand.toString());
-            LatLng coordinates = b.getParcelable(KEY_PHOTO_COORDINATES);
+            //LatLng coordinates = b.getParcelable(KEY_PHOTO_COORDINATES);
             try {
                 Bitmap bitmap = ThumbnailUtils.extractThumbnail(
                         MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
                         300,
                         300);
 
-                addImage(new Photo(bitmap, brand, coordinates));
+                addImage(new Photo(bitmap, brand, null));
                 toast(getString(R.string.toast_photo_ok));
 
             } catch (IOException e) {

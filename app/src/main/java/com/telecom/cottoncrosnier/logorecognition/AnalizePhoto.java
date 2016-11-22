@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
@@ -20,7 +22,6 @@ import com.telecom.cottoncrosnier.logorecognition.reference.BrandList;
 
 import java.io.IOException;
 import java.util.List;
-
 
 /**
  * Created by matthieu on 24/10/16.
@@ -61,6 +62,18 @@ public class AnalizePhoto extends Activity {
                 finish();
             }
         });
+
+        ImageView imageView = (ImageView) findViewById(R.id.image_view);
+        try{
+                 Bitmap bitmap = scaleBitmapDown(
+                             MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
+                            600);
+            imageView.setImageBitmap(bitmap);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 
 
@@ -84,6 +97,26 @@ public class AnalizePhoto extends Activity {
 
             }
         }
+    }
+
+    public static Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
+
+        int originalWidth = bitmap.getWidth();
+        int originalHeight = bitmap.getHeight();
+        int resizedWidth = maxDimension;
+        int resizedHeight = maxDimension;
+
+        if (originalHeight > originalWidth) {
+            resizedHeight = maxDimension;
+            resizedWidth = (int) (resizedHeight * (float) originalWidth / (float) originalHeight);
+        } else if (originalWidth > originalHeight) {
+            resizedWidth = maxDimension;
+            resizedHeight = (int) (resizedWidth * (float) originalHeight / (float) originalWidth);
+        } else if (originalHeight == originalWidth) {
+            resizedHeight = maxDimension;
+            resizedWidth = maxDimension;
+        }
+        return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
 
 
