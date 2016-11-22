@@ -55,8 +55,8 @@ public class AnalizePhoto extends Activity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
                 resultIntent.putExtra(MainActivity.KEY_PHOTO_BRAND, mBrand);
-                resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, mAddress.getLocality());
-                Log.d(TAG, "onClick: lat"+mLatLng.toString());
+                //resultIntent.putExtra(MainActivity.KEY_PHOTO_COORDINATES, mAddress.getLocality());
+                //Log.d(TAG, "onClick: lat"+mLatLng.toString());
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }
@@ -81,7 +81,7 @@ public class AnalizePhoto extends Activity {
             if (address != null) {
                 Log.d(TAG, "onResultSucceeded() called with: address = [" + address.toString() + "]");
                 mAddress = address;
-                //mCityNameAdapter.add(mAddress.getLocality());
+
             }
         }
     }
@@ -110,7 +110,7 @@ public class AnalizePhoto extends Activity {
             if (mLatLng != null) {
                 mAddress = getAddressFromLatLng();
             }
-            Log.d(TAG, "doInBackground: adresse"+mAddress.getLocality());
+            //Log.d(TAG, "doInBackground: adresse"+mAddress.getLocality());
             return mAddress;
         }
 
