@@ -37,8 +37,7 @@
 
         <activity
             android:name=".AnalizePhoto"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateVisible">
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".LaunchBrowserActivity"
