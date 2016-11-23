@@ -2,11 +2,13 @@
 package com.telecom.cottoncrosnier.logorecognition;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -76,5 +78,10 @@ public class Utils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void toast(Context context, String text) {
+        Toast.makeText(context, text,
+                Toast.LENGTH_SHORT).show();
     }
 }

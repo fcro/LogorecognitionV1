@@ -1,4 +1,4 @@
-package com.telecom.cottoncrosnier.logorecognition;
+package com.telecom.cottoncrosnier.logorecognition.Activity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+
+import com.telecom.cottoncrosnier.logorecognition.Utils;
 
 import java.io.File;
 

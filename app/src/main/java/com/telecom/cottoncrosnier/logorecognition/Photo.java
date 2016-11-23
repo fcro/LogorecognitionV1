@@ -13,13 +13,10 @@ public class Photo {
 
     private Bitmap mBitmap;
     private Brand mBrand;
-    private LatLng mCoordinates;
 
-
-    public Photo(Bitmap bitmap, Brand brand, LatLng coordinates) {
+    public Photo(Bitmap bitmap, Brand brand) {
         this.mBitmap = bitmap;
         this.mBrand = brand;
-        this.mCoordinates = coordinates;
     }
 
 
@@ -31,16 +28,10 @@ public class Photo {
         return mBrand;
     }
 
-    public LatLng getCoordinates() {
-        return mCoordinates;
-    }
-
     public String toString() {
         return "[image = " + getBitmap().toString() +
                 " ; mBrand = " + getBrand() +
-                " ; description = " + getBrand()
- //               " ; coordinates = " + getCoordinates().toString() + "]";
-        ;
+                " ; description = " + getBrand();
     }
 
 }

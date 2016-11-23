@@ -1,4 +1,4 @@
-package com.telecom.cottoncrosnier.logorecognition;
+package com.telecom.cottoncrosnier.logorecognition.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,9 +19,12 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 
+import com.telecom.cottoncrosnier.logorecognition.Photo;
+import com.telecom.cottoncrosnier.logorecognition.PhotoArrayAdapter;
+import com.telecom.cottoncrosnier.logorecognition.R;
+import com.telecom.cottoncrosnier.logorecognition.Utils;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 import com.telecom.cottoncrosnier.logorecognition.reference.BrandList;
 import com.telecom.cottoncrosnier.logorecognition.reference.JsonBrandReader;
@@ -35,14 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String KEY_PHOTO_PATH = "key_path";
     public static final String KEY_PHOTO_BRAND = "key_brand";
-    public static final String KEY_PHOTO_COORDINATES = "key_coordinates";
     public static final String KEY_URL = "key_url";
 
     private final static int TAKE_PHOTO_REQUEST = 1;
     private static final int GALLERY_IMAGE_REQUEST = 2;
     private final static int ANALYZE_PHOTO_REQUEST = 3;
     private final static int VIEW_BROWSER_REQUEST = 4;
-    private final static int MAP_REQUEST = 5;
 
     private static final int INVALID_POSITION = -1;
 
@@ -93,11 +94,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         Log.d(TAG, "onOptionsItemSelected: id = " + id);
         //noinspection SimplifiableIfStatement
-        if (id == R.id.view_map) {
-            Log.d(TAG, "onOptionsItemSelected: view map");
-            startMap();
-            return true;
-        } else if (id == R.id.view_website) {
+        if (id == R.id.view_website) {
             startBrowser();
             return true;
         } else if (id == R.id.delete_photo) {
@@ -123,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_CANCELED) {
             Log.d(TAG, "onActivityResult:: gallery & canceled");
-            toast(getString(R.string.toast_gallery_canceled));
+            Utils.toast(this,getString(R.string.toast_gallery_canceled));
 
         } else if (requestCode == TAKE_PHOTO_REQUEST && resultCode == RESULT_OK) {
             Bundle b = data.getExtras();
@@ -135,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else if (requestCode == TAKE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
             Log.d(TAG, "onActivityResult: take photo & canceled");
-            toast(getString(R.string.toast_photo_canceled));
+            Utils.toast(this,getString(R.string.toast_photo_canceled));
 
         } else if (requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_OK) {
             Log.d(TAG, "onActivityResult: analyse & ok");
@@ -145,26 +142,25 @@ public class MainActivity extends AppCompatActivity {
             Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
             Brand brand = (Brand) b.getSerializable(KEY_PHOTO_BRAND);
             Log.d(TAG, "brand = " + brand.toString());
-            //LatLng coordinates = b.getParcelable(KEY_PHOTO_COORDINATES);
             try {
                 Bitmap bitmap = ThumbnailUtils.extractThumbnail(
                         MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
                         300,
                         300);
 
-                addImage(new Photo(bitmap, brand, null));
-                toast(getString(R.string.toast_photo_ok));
+                addImage(new Photo(bitmap, brand));
+                Utils.toast(this,getString(R.string.toast_photo_ok));
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if (requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
-            toast("analyze not ok");
+            Utils.toast(this, "analyze not ok");
         } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_OK) {
 //            toast("view web site ok");
             Log.d(TAG, "onActivityResult: view web site ok");
         } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_CANCELED) {
-            toast("Brand unknown");
+            Utils.toast(this,"Brand unknown");
         }
     }
 
@@ -183,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void startAnalyze(Uri uri) {
-        Intent startAnalyze = new Intent(MainActivity.this, AnalizePhoto.class);
+        Intent startAnalyze = new Intent(MainActivity.this, AnalizePhotoActivity.class);
         startAnalyze.putExtra(KEY_PHOTO_PATH, uri);
         startActivityForResult(startAnalyze, ANALYZE_PHOTO_REQUEST);
     }
@@ -195,18 +191,8 @@ public class MainActivity extends AppCompatActivity {
             startWebBrowser.putExtra(KEY_URL, mPhotoAdapter.getItem(mId).getBrand().getUrl().toString());
             startActivityForResult(startWebBrowser, VIEW_BROWSER_REQUEST);
         } else {
-            toast("please select an item");
+            Utils.toast(this,"please select an item");
         }
-    }
-
-    private void startMap() {
-        Intent startMap = new Intent(MainActivity.this, MapActivity.class);
-        startActivityForResult(startMap, MAP_REQUEST);
-    }
-
-    private void toast(String text) {
-        Toast.makeText(this, text,
-                Toast.LENGTH_SHORT).show();
     }
 
     private void addImage(Photo photo) {
@@ -268,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void deletePhoto() {
         if (mId == INVALID_POSITION) {
-            toast("please select an item");
+            Utils.toast(this,"please select an item");
             return;
         }
 

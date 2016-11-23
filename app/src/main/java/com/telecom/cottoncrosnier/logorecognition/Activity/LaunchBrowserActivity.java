@@ -1,4 +1,4 @@
-package com.telecom.cottoncrosnier.logorecognition;
+package com.telecom.cottoncrosnier.logorecognition.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
