@@ -6,6 +6,7 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_calib3d;
 import org.bytedeco.javacpp.opencv_core.*;
 import org.bytedeco.javacpp.opencv_nonfree.*;
+import org.bytedeco.javacpp.presets.opencv_core;
 
 import static org.bytedeco.javacpp.opencv_core.NORM_L2;
 import static org.bytedeco.javacpp.opencv_features2d.*;
@@ -27,12 +28,14 @@ public class MatManager {
 
     private Mat mMat;
     private SIFT mSift;
+    private Mat mDescriptor;
 
 
     public MatManager(String path) {
         Log.d(TAG, "MatManager() called with: path = [" + path + "]");
         this.mMat = imread(path);
         this.mSift = new SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
+        this.mDescriptor = computeDescriptor();
     }
 
 
@@ -40,7 +43,7 @@ public class MatManager {
         return mMat;
     }
 
-    private KeyPoint getKeypoints(Mat mat) {
+    public KeyPoint getKeypoints(Mat mat) {
         KeyPoint keypoints = new KeyPoint();
 
         Loader.load(opencv_calib3d.class);
@@ -49,7 +52,15 @@ public class MatManager {
         return keypoints;
     }
 
-    private Mat getDescriptor(Mat mat, KeyPoint keypoints) {
+    private Mat computeDescriptor() {
+        Mat descriptor = new Mat();
+
+        mSift.compute(mMat, getKeypoints(mMat), descriptor);
+
+        return descriptor;
+    }
+
+    public Mat computeDescriptor(Mat mat, KeyPoint keypoints) {
         Mat descriptor = new Mat();
 
         mSift.compute(mat, keypoints, descriptor);
@@ -57,15 +68,15 @@ public class MatManager {
         return descriptor;
     }
 
-    public DMatch getMatchesWith(MatManager otherMat) {
+    public Mat getDescriptor() {
+        return mDescriptor;
+    }
+
+    public DMatch getMatchesWith(Mat otherDescriptor) {
         DMatch matches = new DMatch();
 
-        Mat descriptor = getDescriptor(getMat(), getKeypoints(getMat()));
-        Mat otherDescriptor =
-                otherMat.getDescriptor(otherMat.getMat(), otherMat.getKeypoints(otherMat.getMat()));
-
         BFMatcher matcher = new BFMatcher(NORM_L2, false);
-        matcher.match(descriptor, otherDescriptor, matches);
+        matcher.match(mDescriptor, otherDescriptor, matches);
 
         return matches;
     }

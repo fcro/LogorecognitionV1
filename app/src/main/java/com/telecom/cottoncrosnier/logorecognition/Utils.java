@@ -2,7 +2,6 @@
 package com.telecom.cottoncrosnier.logorecognition;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
@@ -60,6 +59,7 @@ public class Utils {
         int size;
         byte[] buffer;
         String filePath = context.getCacheDir() + "/" + fileName;
+        File file = new File(filePath);
         AssetManager assetManager = context.getAssets();
 
         try {
@@ -73,7 +73,7 @@ public class Utils {
             fos.write(buffer);
             fos.close();
 
-            return new File(filePath);
+            return file;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

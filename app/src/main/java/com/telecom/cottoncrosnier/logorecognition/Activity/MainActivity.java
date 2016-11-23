@@ -1,5 +1,6 @@
 package com.telecom.cottoncrosnier.logorecognition.Activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int INVALID_POSITION = -1;
 
+    private static Context context;
+
     private ListView mPhotoListView;
 
     private ArrayAdapter<Photo> mPhotoAdapter;
@@ -62,13 +65,21 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        try {
-            BrandList.setBrands(new JsonBrandReader(
-                    Utils.assetToCache(this, "reference/metadata/brands.json", "brands.json"))
-                    .readJsonStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        context = this;
+
+        new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BrandList.setBrands(new JsonBrandReader(
+                            Utils.assetToCache(context, "reference/metadata/brands.json", "brands.json"))
+                            .readJsonStream());
+                } catch (IOException e) {} finally {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }.run();
+
 
         initFloatingButton();
 
@@ -112,9 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri imgPath = data.getData();
-            int photoNumber = 3;
             Log.d(TAG, "onActivityResult:: imgPath = " + imgPath.toString());
-            Log.d(TAG, "onActivityResult:: photoNumber = " + photoNumber);
 
             startAnalyze(imgPath);
 
@@ -272,6 +281,10 @@ public class MainActivity extends AppCompatActivity {
                         mPhotoListView.getItemIdAtPosition(mId));
             }
         }
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }
 

@@ -13,8 +13,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.telecom.cottoncrosnier.logorecognition.R;
+import com.telecom.cottoncrosnier.logorecognition.image.MatManager;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 import com.telecom.cottoncrosnier.logorecognition.reference.BrandList;
+import com.telecom.cottoncrosnier.logorecognition.reference.RefDescriptors;
 
 
 /**
@@ -34,9 +36,6 @@ public class AnalizePhotoActivity extends Activity {
         setContentView(R.layout.analyze_activity);
         Log.d(TAG, "onCreate:");
 
-        mBrand = BrandList.getBrand("pimkie");
-        Log.d(TAG, "brand = " + mBrand);
-
         final Intent intent = getIntent();
         Bundle b = intent.getExtras();
         final Uri imgPath = b.getParcelable(MainActivity.KEY_PHOTO_PATH);
@@ -54,17 +53,34 @@ public class AnalizePhotoActivity extends Activity {
             }
         });
 
+        MatManager mat = new MatManager(imgPath.getPath());
+        Brand bestBrand = BrandList.getBrand("apple");
+        Log.d(TAG, "onCreate: bestBrand de base = " + bestBrand.getBrandName());
+        float bestDistance = mat.getMatchesWith(RefDescriptors.getDescriptor(bestBrand.getBrandName())).distance();
+
+        for (Brand brand : BrandList.getBrands()) {
+            Log.d(TAG, "onCreate: bestBrand = " + bestBrand.getBrandName());
+            Log.d(TAG, "onCreate: bestDistance = " + bestDistance);
+            float distance = mat.getMatchesWith(RefDescriptors.getDescriptor(brand.getBrandName())).distance();
+            Log.d(TAG, "onCreate: brand = " + brand.getBrandName() + " ; distance = " + distance);
+            if (distance < bestDistance) {
+                bestBrand = brand;
+                bestDistance = distance;
+            }
+        }
+
+        mBrand = bestBrand;
+        Log.d(TAG, "onCreate: bestBrand = " + bestBrand.getBrandName());
+
         ImageView imageView = (ImageView) findViewById(R.id.image_view);
-        try{
+        try {
                  Bitmap bitmap = scaleBitmapDown(
                              MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
                             600);
             imageView.setImageBitmap(bitmap);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
 

@@ -2,6 +2,8 @@ package com.telecom.cottoncrosnier.logorecognition.reference;
 
 import android.util.JsonReader;
 
+import com.telecom.cottoncrosnier.logorecognition.Activity.MainActivity;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -47,7 +49,7 @@ public class JsonBrandReader {
     private Brand readBrand() throws IOException {
         String brandName = null;
         URL url = null;
-        List<String> imgPrefix = null;
+        String imgPrefix = null;
         String info = null;
 
         mReader.beginObject();
@@ -58,7 +60,7 @@ public class JsonBrandReader {
             } else if (name.equals("url")) {
                 url = new URL("http://" + mReader.nextString());
             } else if (name.equals("imgPrefix")) {
-                imgPrefix = readStringArray();
+                imgPrefix = mReader.nextString();
             } else if (name.equals("info")) {
                 info = mReader.nextString();
             } else {
@@ -68,17 +70,5 @@ public class JsonBrandReader {
         mReader.endObject();
 
         return new Brand(brandName, url, imgPrefix, info);
-    }
-
-    private List<String> readStringArray() throws IOException {
-        List<String> prefixes = new ArrayList<String>();
-
-        mReader.beginArray();
-        while (mReader.hasNext()) {
-            prefixes.add(mReader.nextString());
-        }
-        mReader.endArray();
-
-        return prefixes;
     }
 }
