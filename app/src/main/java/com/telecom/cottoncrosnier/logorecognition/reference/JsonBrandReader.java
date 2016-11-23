@@ -2,8 +2,6 @@ package com.telecom.cottoncrosnier.logorecognition.reference;
 
 import android.util.JsonReader;
 
-import com.telecom.cottoncrosnier.logorecognition.Activity.MainActivity;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

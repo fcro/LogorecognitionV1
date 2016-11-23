@@ -6,7 +6,6 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_calib3d;
 import org.bytedeco.javacpp.opencv_core.*;
 import org.bytedeco.javacpp.opencv_nonfree.*;
-import org.bytedeco.javacpp.presets.opencv_core;
 
 import static org.bytedeco.javacpp.opencv_core.NORM_L2;
 import static org.bytedeco.javacpp.opencv_features2d.*;
@@ -72,12 +71,14 @@ public class MatManager {
         return mDescriptor;
     }
 
-    public DMatch getMatchesWith(Mat otherDescriptor) {
-        DMatch matches = new DMatch();
+    public DMatchVectorVector getMatchesWith(Mat otherDescriptor) {
+        DMatchVectorVector matches = new DMatchVectorVector();
 
         BFMatcher matcher = new BFMatcher(NORM_L2, false);
-        matcher.match(mDescriptor, otherDescriptor, matches);
+        matcher.knnMatch(mDescriptor, otherDescriptor, matches, 2);
 
-        return matches;
+        DMatchVectorVector bestMatches = ImageUtils.refineMatches(matches);
+
+        return bestMatches;
     }
 }
