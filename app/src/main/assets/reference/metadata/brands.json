@@ -3,7 +3,7 @@
     "brandName": "Apple",
     "url": "www.apple.com",
     "imgPrefix": "apple",
-    "info": "American multinational technology company."
+    "info": "American multinational technology company that develops and provides consumer electronics, software and online services."
   },
   {
     "brandName": "Burger King",
@@ -16,6 +16,12 @@
     "url": "www.facebook.com",
     "imgPrefix": "facebook",
     "info": "American for-profit corporation and online social media and social networking service."
+  },
+  {
+    "brandName": "Hewlett-Packard (HP)",
+    "url": "www.hp.com",
+    "imgPrefix": "hp",
+    "info": "American multinational technology company that develops and provides hardware components and software."
   },
   {
     "brandName": "Kentucky Fried Chicken (KFC)",
@@ -40,12 +46,6 @@
     "url": "www.orange.com",
     "imgPrefix": "orange",
     "info": "French multinational telecommunications corporation."
-  },
-  {
-    "brandName": "Pimkie",
-    "url": "www.pimkie.com",
-    "imgPrefix": "pimkie",
-    "info": "French ready-to-wear fashion brand for women."
   },
   {
     "brandName": "Starbucks",

@@ -14,12 +14,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by matthieu on 24/10/16.
  */
 
 public class Utils {
+
+    private final static String TAG = Utils.class.getSimpleName();
+
     public static boolean requestPermission(
             Activity activity, int requestCode, String... permissions) {
         boolean granted = true;
@@ -79,6 +83,20 @@ public class Utils {
             return null;
         }
     }
+
+
+    public static List<String> filesStartWith(String[] files, String prefix) {
+        List<String> fileList = new ArrayList<String>();
+
+        for (String file : files) {
+            if (file.startsWith(prefix)) {
+                fileList.add(file);
+            }
+        }
+
+        return fileList;
+    }
+
 
     public static void toast(Context context, String text) {
         Toast.makeText(context, text,

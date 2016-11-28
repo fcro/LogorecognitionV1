@@ -7,6 +7,9 @@ import org.bytedeco.javacpp.opencv_calib3d;
 import org.bytedeco.javacpp.opencv_core.*;
 import org.bytedeco.javacpp.opencv_nonfree.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.bytedeco.javacpp.opencv_core.NORM_L2;
 import static org.bytedeco.javacpp.opencv_features2d.*;
 import static org.bytedeco.javacpp.opencv_highgui.*;
@@ -80,5 +83,15 @@ public class MatManager {
         DMatchVectorVector bestMatches = ImageUtils.refineMatches(matches);
 
         return bestMatches;
+    }
+
+    public long getMatchesWith(List<Mat> otherDescriptors) {
+        List<DMatchVectorVector> matchesArrayList = new ArrayList<DMatchVectorVector>();
+
+        for (Mat descriptor : otherDescriptors) {
+            matchesArrayList.add(getMatchesWith(descriptor));
+        }
+
+        return ImageUtils.getAvgMatches(matchesArrayList);
     }
 }

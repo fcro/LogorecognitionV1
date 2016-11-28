@@ -18,8 +18,6 @@ import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 import com.telecom.cottoncrosnier.logorecognition.reference.BrandList;
 import com.telecom.cottoncrosnier.logorecognition.reference.RefDescriptors;
 
-import org.bytedeco.javacpp.opencv_features2d.DMatchVectorVector;
-
 
 /**
  * Created by matthieu on 24/10/16.
@@ -57,16 +55,17 @@ public class AnalizePhotoActivity extends Activity {
 
         MatManager mat = new MatManager(imgPath.getPath());
         Brand bestBrand = BrandList.getBrand("apple");
-        float bestMatches = 0;
+        long bestMatches = 0;
 
         for (Brand brand : BrandList.getBrands()) {
             Log.d(TAG, "onCreate: bestBrand = " + bestBrand.getBrandName());
-            Log.d(TAG, "onCreate: bestDistance = " + bestMatches);
-            DMatchVectorVector matches = mat.getMatchesWith(RefDescriptors.getDescriptor(brand.getBrandName()));
+            Log.d(TAG, "onCreate: bestMatches = " + bestMatches);
+            long matches =
+                    mat.getMatchesWith(RefDescriptors.getDescriptors(brand.getBrandName()));
             Log.d(TAG, "onCreate: brand = " + brand.getBrandName());
-            Log.d(TAG, "onCreate: matches.size() = " + matches.size());
-            if (matches.size() > bestMatches) {
-                bestMatches = matches.size();
+            Log.d(TAG, "onCreate: matches = " + matches);
+            if (matches > bestMatches) {
+                bestMatches = matches;
                 bestBrand = brand;
             }
         }

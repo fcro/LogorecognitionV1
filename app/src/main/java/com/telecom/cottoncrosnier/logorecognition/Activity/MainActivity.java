@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri imgPath = data.getData();
             Log.d(TAG, "onActivityResult:: imgPath = " + imgPath.toString());
-
             startAnalyze(imgPath);
 
         } else if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_CANCELED) {

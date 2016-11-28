@@ -2,6 +2,11 @@ package com.telecom.cottoncrosnier.logorecognition.image;
 
 import org.bytedeco.javacpp.opencv_features2d.DMatchVectorVector;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class ImageUtils {
 
 
@@ -50,11 +55,13 @@ public class ImageUtils {
 		return brandNewMatches;
 	}
 
-    public static float getAverageDistance(DMatchVectorVector matches) {
-        float avgDistance;
-        for (int i = 0; i < matches.size(); ++i) {
+    public static long getAvgMatches(List<DMatchVectorVector> matchesList) {
+        long avg = 0;
 
+        for (DMatchVectorVector matches : matchesList) {
+            avg += matches.size();
         }
-        return 0F;
+
+        return avg / matchesList.size();
     }
 }

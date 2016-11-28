@@ -1,8 +1,12 @@
 package com.telecom.cottoncrosnier.logorecognition.reference;
 
+import android.util.Log;
+
 import org.bytedeco.javacpp.opencv_core.Mat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,14 +15,35 @@ import java.util.Map;
 
 public class RefDescriptors {
 
-    private static Map<String, Mat> descriptors = new HashMap<String, Mat>();
+    private static final String TAG = RefDescriptors.class.getSimpleName();
+
+    private static Map<String, List<Mat>> descriptors = new HashMap<String, List<Mat>>();
 
 
     public static void addDescriptor(String brandName, Mat descriptor) {
-        descriptors.put(brandName, descriptor);
+        ArrayList descriptorArrayList;
+
+        if (!descriptors.containsKey(brandName)) {
+            descriptorArrayList = new ArrayList();
+            descriptorArrayList.add(descriptor);
+            descriptors.put(brandName, descriptorArrayList);
+        } else {
+            descriptors.get(brandName).add(descriptor);
+        }
     }
 
-    public static Mat getDescriptor(String brandName) {
+    public static void addDescriptors(String brandName, List<Mat> descriptorList) {
+        Log.d(TAG, "addDescriptors() called with: brandName = [" + brandName + "], descriptorList = [" + descriptorList + "]");
+        if (!descriptors.containsKey(brandName)) {
+            Log.d(TAG, "addDescriptors: not containskey");
+            descriptors.put(brandName, descriptorList);
+        } else {
+            Log.d(TAG, "addDescriptors: containskey");
+            descriptors.get(brandName).addAll(descriptorList);
+        }
+    }
+
+    public static List<Mat> getDescriptors(String brandName) {
         return descriptors.get(brandName);
     }
 }
