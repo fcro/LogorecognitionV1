@@ -3,7 +3,6 @@ package com.telecom.cottoncrosnier.logorecognition.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,7 +26,6 @@ public class AnalizePhotoActivity extends Activity {
 
     private final static String TAG = AnalizePhotoActivity.class.getSimpleName();
 
-    private Address mAddress;
     private Brand mBrand;
 
     @Override
@@ -53,25 +51,8 @@ public class AnalizePhotoActivity extends Activity {
             }
         });
 
-        MatManager mat = new MatManager(imgPath.getPath());
-        Brand bestBrand = BrandList.getBrand("apple");
-        long bestMatches = 0;
-
-        for (Brand brand : BrandList.getBrands()) {
-            Log.d(TAG, "onCreate: bestBrand = " + bestBrand.getBrandName());
-            Log.d(TAG, "onCreate: bestMatches = " + bestMatches);
-            long matches =
-                    mat.getMatchesWith(RefDescriptors.getDescriptors(brand.getBrandName()));
-            Log.d(TAG, "onCreate: brand = " + brand.getBrandName());
-            Log.d(TAG, "onCreate: matches = " + matches);
-            if (matches > bestMatches) {
-                bestMatches = matches;
-                bestBrand = brand;
-            }
-        }
-
-        mBrand = bestBrand;
-        Log.d(TAG, "onCreate: bestBrand = " + bestBrand.getBrandName());
+        selectBestBrand(new MatManager(imgPath.getPath()));
+        Log.d(TAG, "onCreate: mBrand = " + mBrand.getBrandName());
 
         ImageView imageView = (ImageView) findViewById(R.id.image_view);
         try {
@@ -83,7 +64,6 @@ public class AnalizePhotoActivity extends Activity {
             e.printStackTrace();
         }
     }
-
 
     @Override
     protected void onDestroy() {
@@ -112,4 +92,33 @@ public class AnalizePhotoActivity extends Activity {
         }
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
+
+
+
+    private void selectBestBrand(final MatManager mat) {
+        new Runnable() {
+            @Override
+            public void run() {
+
+                Brand bestBrand = BrandList.getBrand("apple");
+                long bestMatches = 0;
+
+                for (Brand brand : BrandList.getBrands()) {
+                    Log.d(TAG, "onCreate: bestBrand = " + bestBrand.getBrandName());
+                    Log.d(TAG, "onCreate: bestMatches = " + bestMatches);
+                    long matches =
+                            mat.getMatchesWith(RefDescriptors.getDescriptors(brand.getBrandName()));
+                    Log.d(TAG, "onCreate: brand = " + brand.getBrandName());
+                    Log.d(TAG, "onCreate: matches = " + matches);
+                    if (matches > bestMatches) {
+                        bestMatches = matches;
+                        bestBrand = brand;
+                    }
+                }
+
+                mBrand = bestBrand;
+            }
+        }.run();
+    }
+
 }
