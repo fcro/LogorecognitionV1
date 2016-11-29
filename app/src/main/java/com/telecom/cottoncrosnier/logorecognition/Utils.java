@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
@@ -68,6 +69,33 @@ public class Utils {
 
         try {
             is = assetManager.open(assetPath);
+            size = is.available();
+            buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+
+            fos = new FileOutputStream(filePath);
+            fos.write(buffer);
+            fos.close();
+
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static File galleryToCache(Context context, Uri imgPath, String fileName) {
+        InputStream is;
+        FileOutputStream fos;
+        int size;
+        byte[] buffer;
+        String filePath = context.getCacheDir() + "/" + fileName;
+        File file = new File(filePath);
+
+        try {
+            is = context.getContentResolver().openInputStream(imgPath);
             size = is.available();
             buffer = new byte[size];
             is.read(buffer);
