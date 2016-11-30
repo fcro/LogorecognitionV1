@@ -1,5 +1,6 @@
 package com.telecom.cottoncrosnier.logorecognition.reference;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.telecom.cottoncrosnier.logorecognition.Activity.MainActivity;
@@ -61,9 +62,13 @@ public class Brand implements Serializable {
         return mInfo;
     }
 
-    private List<Mat> computeDescriptors() {
-        Log.d(TAG, "computeDescriptor: " + mImgPrefix);
+    public String getLogo(Context context) {
+        String path = context.getCacheDir().getAbsolutePath() + "/" + mImgPrefix + "0.png";
 
+        return path;
+    }
+
+    private List<Mat> computeDescriptors() {
         final String refRoot = "reference/logos";
         List<String> refAssets;
         List<Mat> descriptors = new ArrayList<Mat>();

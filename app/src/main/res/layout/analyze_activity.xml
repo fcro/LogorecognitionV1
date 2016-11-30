@@ -5,6 +5,19 @@
     android:weightSum="1">
 
 
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:id="@+id/text_brandname" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_brandinfo" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

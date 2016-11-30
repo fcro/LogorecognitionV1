@@ -40,7 +40,8 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
             holder = new PhotoHolder();
             holder.photoImage = (ImageView) row.findViewById(R.id.photo_image);
-            holder.photoDescription = (TextView) row.findViewById(R.id.photo_description);
+            holder.photoBrandName = (TextView) row.findViewById(R.id.photo_brandname);
+            holder.photoBrandInfo = (TextView) row.findViewById(R.id.photo_brandinfo);
 
             row.setTag(holder);
         } else {
@@ -49,13 +50,15 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
         Photo photo = photoArrayList.get(position);
         holder.photoImage.setImageBitmap(photo.getBitmap());
-        holder.photoDescription.setText(photo.getBrand().getInfo());
+        holder.photoBrandName.setText(photo.getBrand().getBrandName());
+        holder.photoBrandInfo.setText(photo.getBrand().getInfo());
 
         return row;
     }
 
     private static class PhotoHolder {
         ImageView photoImage;
-        TextView photoDescription;
+        TextView photoBrandName;
+        TextView photoBrandInfo;
     }
 }

@@ -3,13 +3,14 @@ package com.telecom.cottoncrosnier.logorecognition.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.telecom.cottoncrosnier.logorecognition.R;
 import com.telecom.cottoncrosnier.logorecognition.image.MatManager;
@@ -38,7 +39,11 @@ public class AnalizePhotoActivity extends Activity {
         Bundle b = intent.getExtras();
         final Uri imgPath = b.getParcelable(MainActivity.KEY_PHOTO_PATH);
 
+        TextView brandNameTextView = (TextView) findViewById(R.id.text_brandname);
+        TextView brandInfoTextView = (TextView) findViewById(R.id.text_brandinfo);
+        ImageView imageView = (ImageView) findViewById(R.id.image_view);
         Button button = (Button) findViewById(R.id.button_description_ok);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,11 +59,16 @@ public class AnalizePhotoActivity extends Activity {
         selectBestBrand(new MatManager(imgPath.getPath()));
         Log.d(TAG, "onCreate: mBrand = " + mBrand.getBrandName());
 
-        ImageView imageView = (ImageView) findViewById(R.id.image_view);
+        brandNameTextView.setText(mBrand.getBrandName());
+        brandInfoTextView.setText(mBrand.getInfo());
+
         try {
-                 Bitmap bitmap = scaleBitmapDown(
-                             MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
-                            600);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            Bitmap bitmap = scaleBitmapDown(
+                    BitmapFactory.decodeFile(mBrand.getLogo(this), options),
+                    400);
+
             imageView.setImageBitmap(bitmap);
         } catch (Exception e) {
             e.printStackTrace();
