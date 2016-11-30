@@ -33,12 +33,10 @@ public class RefDescriptors {
     }
 
     public static void addDescriptors(String brandName, List<Mat> descriptorList) {
-        Log.d(TAG, "addDescriptors() called with: brandName = [" + brandName + "], descriptorList = [" + descriptorList + "]");
+        Log.d(TAG, "addDescriptors() called with: brandName = [" + brandName + "]");
         if (!descriptors.containsKey(brandName)) {
-            Log.d(TAG, "addDescriptors: not containskey");
             descriptors.put(brandName, descriptorList);
         } else {
-            Log.d(TAG, "addDescriptors: containskey");
             descriptors.get(brandName).addAll(descriptorList);
         }
     }

@@ -2,10 +2,7 @@ package com.telecom.cottoncrosnier.logorecognition.image;
 
 import org.bytedeco.javacpp.opencv_features2d.DMatchVectorVector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ImageUtils {
 
@@ -55,13 +52,15 @@ public class ImageUtils {
 		return brandNewMatches;
 	}
 
-    public static long getAvgMatches(List<DMatchVectorVector> matchesList) {
-        long avg = 0;
+    public static long getBestMatch(List<DMatchVectorVector> matchesList) {
+        long best = 0;
 
         for (DMatchVectorVector matches : matchesList) {
-            avg += matches.size();
+            if (matches.size() > best) {
+				best = matches.size();
+			}
         }
 
-        return avg / matchesList.size();
+        return best;
     }
 }

@@ -24,8 +24,8 @@ public class MatManager {
 
     private static final int N_FEATURES = 0; // nbr meilleures caracteristiques a retenir
     private static final int N_OCTAVE_LAYERS = 3; // nbr couches dans chaque octave
-    private static final double CONTRAST_THRESHOLD = 0.03; // seuil de contraste pour filtrer les caracteristiques faibles en regions semi-uniformes
-    private static final int EDGE_THRESHOLD = 10; // seuil de filtrage des caracteristiques des pointes
+    private static final double CONTRAST_THRESHOLD = 0.04   ; // seuil de contraste pour filtrer les caracteristiques faibles en regions semi-uniformes
+    private static final double EDGE_THRESHOLD = 10; // seuil de filtrage des caracteristiques des pointes
     private static final double SIGMA = 1.6; // sigma de la gaussienne (reduire si l'image est de faible resolution)
 
     private Mat mMat;
@@ -51,6 +51,7 @@ public class MatManager {
         Loader.load(opencv_calib3d.class);
         mSift.detect(mat, keypoints);
 
+        Log.d(TAG, "getKeypoints:: keypoints size = " + keypoints.size());
         return keypoints;
     }
 
@@ -92,6 +93,6 @@ public class MatManager {
             matchesArrayList.add(getMatchesWith(descriptor));
         }
 
-        return ImageUtils.getAvgMatches(matchesArrayList);
+        return ImageUtils.getBestMatch(matchesArrayList);
     }
 }

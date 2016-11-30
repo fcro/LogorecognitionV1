@@ -1,22 +1,25 @@
 package com.telecom.cottoncrosnier.logorecognition.Activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.telecom.cottoncrosnier.logorecognition.R;
-import com.telecom.cottoncrosnier.logorecognition.image.MatManager;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
-import com.telecom.cottoncrosnier.logorecognition.reference.BrandList;
-import com.telecom.cottoncrosnier.logorecognition.reference.RefDescriptors;
+import com.telecom.cottoncrosnier.logorecognition.service.AnalyzePhotoService;
 
 
 /**
@@ -29,22 +32,40 @@ public class AnalizePhotoActivity extends Activity {
 
     private Brand mBrand;
 
+    private BroadcastReceiver mBroadcastReceiver;
+
+    private TextView mBrandNameTextView;
+    private TextView mBrandInfoTextView;
+    private ImageView mImageView;
+    private Button mButton;
+    private ProgressBar mProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.analyze_activity);
         Log.d(TAG, "onCreate:");
 
+        mBrandNameTextView = (TextView) findViewById(R.id.text_brandname);
+        mBrandInfoTextView = (TextView) findViewById(R.id.text_brandinfo);
+        mImageView = (ImageView) findViewById(R.id.image_view);
+        mButton = (Button) findViewById(R.id.button_description_ok);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_analyze);
+
         final Intent intent = getIntent();
         Bundle b = intent.getExtras();
         final Uri imgPath = b.getParcelable(MainActivity.KEY_PHOTO_PATH);
 
-        TextView brandNameTextView = (TextView) findViewById(R.id.text_brandname);
-        TextView brandInfoTextView = (TextView) findViewById(R.id.text_brandinfo);
-        ImageView imageView = (ImageView) findViewById(R.id.image_view);
-        Button button = (Button) findViewById(R.id.button_description_ok);
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                displayResult((Brand) intent.getSerializableExtra(AnalyzePhotoService.ANALYZE_RESULT));
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver,
+                new IntentFilter(AnalyzePhotoService.BROADCAST_ACTION_ANALYZE));
 
-        button.setOnClickListener(new View.OnClickListener() {
+        mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
@@ -56,23 +77,9 @@ public class AnalizePhotoActivity extends Activity {
             }
         });
 
-        selectBestBrand(new MatManager(imgPath.getPath()));
-        Log.d(TAG, "onCreate: mBrand = " + mBrand.getBrandName());
-
-        brandNameTextView.setText(mBrand.getBrandName());
-        brandInfoTextView.setText(mBrand.getInfo());
-
-        try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
-            Bitmap bitmap = scaleBitmapDown(
-                    BitmapFactory.decodeFile(mBrand.getLogo(this), options),
-                    400);
-
-            imageView.setImageBitmap(bitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Intent analyzeIntent = new Intent(this, AnalyzePhotoService.class);
+        analyzeIntent.setData(imgPath);
+        startService(analyzeIntent);
     }
 
     @Override
@@ -83,7 +90,34 @@ public class AnalizePhotoActivity extends Activity {
 
 
 
-    public static Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
+    private void displayResult(Brand brand) {
+        Log.d(TAG, "displayResult:: brand = " + brand.getBrandName());
+
+        mBrand = brand;
+
+        mProgressBar.setVisibility(View.GONE);
+        mBrandNameTextView.setVisibility(View.VISIBLE);
+        mBrandInfoTextView.setVisibility(View.VISIBLE);
+        mImageView.setVisibility(View.VISIBLE);
+        mButton.setVisibility(View.VISIBLE);
+
+        mBrandNameTextView.setText(mBrand.getBrandName());
+        mBrandInfoTextView.setText(mBrand.getInfo());
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bitmap = scaleBitmapDown(
+                BitmapFactory.decodeFile(mBrand.getLogo(this), options),
+                300);
+
+        mImageView.setImageBitmap(bitmap);
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
+    }
+
+
+
+    public Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
 
         int originalWidth = bitmap.getWidth();
         int originalHeight = bitmap.getHeight();
@@ -101,34 +135,6 @@ public class AnalizePhotoActivity extends Activity {
             resizedWidth = maxDimension;
         }
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
-    }
-
-
-
-    private void selectBestBrand(final MatManager mat) {
-        new Runnable() {
-            @Override
-            public void run() {
-
-                Brand bestBrand = BrandList.getBrand("apple");
-                long bestMatches = 0;
-
-                for (Brand brand : BrandList.getBrands()) {
-                    Log.d(TAG, "onCreate: bestBrand = " + bestBrand.getBrandName());
-                    Log.d(TAG, "onCreate: bestMatches = " + bestMatches);
-                    long matches =
-                            mat.getMatchesWith(RefDescriptors.getDescriptors(brand.getBrandName()));
-                    Log.d(TAG, "onCreate: brand = " + brand.getBrandName());
-                    Log.d(TAG, "onCreate: matches = " + matches);
-                    if (matches > bestMatches) {
-                        bestMatches = matches;
-                        bestBrand = brand;
-                    }
-                }
-
-                mBrand = bestBrand;
-            }
-        }.run();
     }
 
 }
