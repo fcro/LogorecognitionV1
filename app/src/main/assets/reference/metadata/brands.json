@@ -1,5 +1,11 @@
 [
   {
+    "brandName": "Alcatel-Lucent",
+    "url": "www.alcatel-lucent.com",
+    "imgPrefix": "alcatel",
+    "info": "French global telecommunications equipment company."
+  },
+  {
     "brandName": "Apple",
     "url": "www.apple.com",
     "imgPrefix": "apple",
@@ -16,6 +22,12 @@
     "url": "www.facebook.com",
     "imgPrefix": "facebook",
     "info": "American for-profit corporation and online social media and social networking service."
+  },
+  {
+    "brandName": "Google",
+    "url": "www.google.com",
+    "imgPrefix": "google",
+    "info": "American multinational technology company specializing in Internet-related services and products."
   },
   {
     "brandName": "Hewlett-Packard (HP)",
@@ -36,10 +48,10 @@
     "info": "Belgian premium beer brand."
   },
   {
-    "brandName": "McDonald's",
-    "url": "www.mcdonalds.com",
-    "imgPrefix": "mcdonalds",
-    "info": "American hamburger and fast food restaurant chain."
+    "brandName": "Logitech",
+    "url": "www.logitech.com",
+    "imgPrefix": "logitech",
+    "info": "Swiss global provider of personal computer and tablet accessories."
   },
   {
     "brandName": "Orange",
