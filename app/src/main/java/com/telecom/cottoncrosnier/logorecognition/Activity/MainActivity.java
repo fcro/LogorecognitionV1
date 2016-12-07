@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
 
-        new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     Thread.currentThread().interrupt();
                 }
             }
-        }.run();
+        }).start();
 
 
         initFloatingButton();
@@ -209,18 +208,6 @@ public class MainActivity extends AppCompatActivity {
         mPhotoAdapter.add(photo);
     }
 
-    private void colorRow(AdapterView<?> adapter, View row, int position) {
-        for (int i = 0; i < adapter.getCount(); ++i) {
-            if (i != position) {
-                Log.d(TAG, "colorRow:: adapter.getChildAt(" + i + ") = " +
-                        adapter.getChildAt(i).getClass().getCanonicalName());
-                adapter.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
-            }
-        }
-
-        row.setBackgroundResource(R.drawable.rounded_bg);
-    }
-
     private void initListView() {
         mId = INVALID_POSITION;
         mPhotoListView = (ListView) findViewById(R.id.img_list_view);
@@ -231,7 +218,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onItemClick: position = [" + position + "] view = [" +
                         view.getClass().getCanonicalName() + "]");
                 mId = position;
-                colorRow(parent, view, mId);
+                ((PhotoArrayAdapter) mPhotoAdapter).selectRow(mId);
+                mPhotoAdapter.notifyDataSetChanged();
             }
         });
     }

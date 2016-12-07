@@ -2,6 +2,7 @@ package com.telecom.cottoncrosnier.logorecognition;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,15 @@ import java.util.ArrayList;
 
 public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
+
+    private static final String TAG = ArrayAdapter.class.getSimpleName();
+
+
     private Context context;
     private int layoutResourceId;
     private ArrayList<Photo> photoArrayList;
+
+    private int selectedRow;
 
     public PhotoArrayAdapter(Context context, int layoutResourceId,
                              ArrayList<Photo> photoArrayList) {
@@ -27,6 +34,7 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
         this.context = context;
         this.layoutResourceId = layoutResourceId;
         this.photoArrayList = photoArrayList;
+        this.selectedRow = -1;
     }
 
     @Override
@@ -45,6 +53,12 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
             row.setTag(holder);
         } else {
+            if (position == selectedRow) {
+                row.setBackgroundResource(R.drawable.rounded_bg);
+            } else {
+                row.setBackgroundColor(Color.TRANSPARENT);
+            }
+
             holder = (PhotoHolder) row.getTag();
         }
 
@@ -60,5 +74,10 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
         ImageView photoImage;
         TextView photoBrandName;
         TextView photoBrandInfo;
+    }
+
+
+    public void selectRow(int selectedRow) {
+        this.selectedRow = selectedRow;
     }
 }
