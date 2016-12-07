@@ -17,7 +17,7 @@ public class ImageUtils {
 		int sz = 0;
 		newMatches.resize(oldMatches.size());
 
-		double maxDist = 0.0, minDist = 1e100; // infinity
+		double maxDist = 0.0, minDist = Double.MAX_VALUE; // infinity
 
 		for (int i = 0; i < oldMatches.size(); i++) {
 			newMatches.resize(i, 1);

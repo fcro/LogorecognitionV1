@@ -27,9 +27,9 @@ public class AnalyzePhotoService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
-
         if (intent != null) {
+            Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
+
             final MatManager matManager = new MatManager(intent.getData().getPath());
             handleActionAnalyze(matManager);
         }
