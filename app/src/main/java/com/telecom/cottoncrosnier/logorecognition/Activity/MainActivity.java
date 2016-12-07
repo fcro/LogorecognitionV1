@@ -1,5 +1,6 @@
 package com.telecom.cottoncrosnier.logorecognition.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,22 +41,23 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_PHOTO_BRAND = "key_brand";
     public static final String KEY_URL = "key_url";
 
-    private final static int TAKE_PHOTO_REQUEST = 1;
+    private static final int TAKE_PHOTO_REQUEST = 1;
     private static final int GALLERY_IMAGE_REQUEST = 2;
-    private final static int ANALYZE_PHOTO_REQUEST = 3;
-    private final static int VIEW_BROWSER_REQUEST = 4;
+    private static final int ANALYZE_PHOTO_REQUEST = 3;
+    private static final int VIEW_BROWSER_REQUEST = 4;
 
     private static final int INVALID_POSITION = -1;
 
     private static Context context;
 
+    private ArrayList<Photo> mArrayPhoto;
+    private ArrayAdapter<Photo> mPhotoAdapter;
     private ListView mPhotoListView;
 
-    private ArrayAdapter<Photo> mPhotoAdapter;
+    private ProgressDialog mProgressDialog;
 
     private int mId;
 
-    private ArrayList<Photo> mArrayPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,18 +75,20 @@ public class MainActivity extends AppCompatActivity {
                     BrandList.setBrands(new JsonBrandReader(
                             Utils.assetToCache(context, "reference/metadata/brands.json", "brands.json"))
                             .readJsonStream());
+
+                    showButton();
                 } catch (IOException e) {} finally {
                     Thread.currentThread().interrupt();
                 }
             }
         }).start();
 
-
-        initFloatingButton();
+        mProgressDialog = ProgressDialog.show(
+                this, getString(R.string.progress_initializing), getString(R.string.wait));
 
         mArrayPhoto = new ArrayList<>();
-        mPhotoAdapter = new PhotoArrayAdapter(this, R.layout.listview_row,
-                mArrayPhoto);
+        mPhotoAdapter = new PhotoArrayAdapter(
+                this, R.layout.listview_row, mArrayPhoto);
 
         initListView();
     }
@@ -247,6 +251,8 @@ public class MainActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
+
+        fab.setVisibility(View.VISIBLE);
     }
 
     private void deletePhoto() {
@@ -269,6 +275,19 @@ public class MainActivity extends AppCompatActivity {
                         mPhotoListView.getItemIdAtPosition(mId));
             }
         }
+    }
+
+    private void showButton() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mProgressDialog.dismiss();
+                // close progressdialog
+
+                initFloatingButton();
+                // init + show floatingActionButton
+            }
+        });
     }
 
     public static Context getContext() {

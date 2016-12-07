@@ -17,5 +17,6 @@
     <string name="wait_localisation">Waiting for localisation</string>
     <string name="delete_photo">Delete photo</string>
     <string name="progress_analyzing">Analyzing image</string>
+    <string name="progress_initializing">Initializing database</string>
     <string name="wait">Please wait</string>
 </resources>
