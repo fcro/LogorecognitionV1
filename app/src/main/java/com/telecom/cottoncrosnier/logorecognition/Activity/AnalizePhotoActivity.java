@@ -1,6 +1,7 @@
 package com.telecom.cottoncrosnier.logorecognition.Activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.telecom.cottoncrosnier.logorecognition.R;
@@ -38,7 +38,8 @@ public class AnalizePhotoActivity extends Activity {
     private TextView mBrandInfoTextView;
     private ImageView mImageView;
     private Button mButton;
-    private ProgressBar mProgressBar;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,13 @@ public class AnalizePhotoActivity extends Activity {
         mBrandInfoTextView = (TextView) findViewById(R.id.text_brandinfo);
         mImageView = (ImageView) findViewById(R.id.image_view);
         mButton = (Button) findViewById(R.id.button_description_ok);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_analyze);
 
         final Intent intent = getIntent();
         Bundle b = intent.getExtras();
         final Uri imgPath = b.getParcelable(MainActivity.KEY_PHOTO_PATH);
+
+        mProgressDialog = ProgressDialog.show(
+                this, getString(R.string.progress_analyzing), getString(R.string.wait));
 
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -95,10 +98,8 @@ public class AnalizePhotoActivity extends Activity {
 
         mBrand = brand;
 
-        mProgressBar.setVisibility(View.GONE);
-        mBrandNameTextView.setVisibility(View.VISIBLE);
-        mBrandInfoTextView.setVisibility(View.VISIBLE);
-        mImageView.setVisibility(View.VISIBLE);
+        mProgressDialog.dismiss();
+
         mButton.setVisibility(View.VISIBLE);
 
         mBrandNameTextView.setText(mBrand.getBrandName());

@@ -6,24 +6,19 @@
 
 
     <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:visibility="gone"
         android:id="@+id/text_brandname" />
 
     <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:id="@+id/text_brandinfo" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:id="@+id/image_view" />
 
     <Button
@@ -32,11 +27,5 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:id="@+id/button_description_ok" />
-
-    <ProgressBar
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar_analyze" />
 
 </LinearLayout>
