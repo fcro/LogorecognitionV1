@@ -221,7 +221,8 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: position = [" + position + "] view = [" +
                         view.getClass().getCanonicalName() + "]");
-                mId = position;
+                mId = (position == mId ? -1 : position);
+
                 ((PhotoArrayAdapter) mPhotoAdapter).selectRow(mId);
                 mPhotoAdapter.notifyDataSetChanged();
             }
@@ -294,6 +295,3 @@ public class MainActivity extends AppCompatActivity {
         return context;
     }
 }
-
-
-

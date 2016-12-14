@@ -81,6 +81,6 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
 
     public void selectRow(int selectedRow) {
-        this.selectedRow = selectedRow;
+        this.selectedRow = (selectedRow == this.selectedRow ? -1 : selectedRow);
     }
 }
