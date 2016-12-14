@@ -1,4 +1,4 @@
-package com.telecom.cottoncrosnier.logorecognition;
+package com.telecom.cottoncrosnier.logorecognition.activity.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.telecom.cottoncrosnier.logorecognition.R;
+import com.telecom.cottoncrosnier.logorecognition.image.Photo;
 
 import java.util.ArrayList;
 

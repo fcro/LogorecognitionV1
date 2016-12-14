@@ -1,4 +1,4 @@
-package com.telecom.cottoncrosnier.logorecognition.Activity;
+package com.telecom.cottoncrosnier.logorecognition.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,8 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-import com.telecom.cottoncrosnier.logorecognition.Photo;
-import com.telecom.cottoncrosnier.logorecognition.PhotoArrayAdapter;
+import com.telecom.cottoncrosnier.logorecognition.image.Photo;
+import com.telecom.cottoncrosnier.logorecognition.activity.adapter.PhotoArrayAdapter;
 import com.telecom.cottoncrosnier.logorecognition.R;
 import com.telecom.cottoncrosnier.logorecognition.Utils;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;

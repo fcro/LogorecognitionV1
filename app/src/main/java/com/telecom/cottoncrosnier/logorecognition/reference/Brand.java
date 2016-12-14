@@ -3,7 +3,7 @@ package com.telecom.cottoncrosnier.logorecognition.reference;
 import android.content.Context;
 import android.util.Log;
 
-import com.telecom.cottoncrosnier.logorecognition.Activity.MainActivity;
+import com.telecom.cottoncrosnier.logorecognition.activity.MainActivity;
 import com.telecom.cottoncrosnier.logorecognition.Utils;
 import com.telecom.cottoncrosnier.logorecognition.image.MatManager;
 
