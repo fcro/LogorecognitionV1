@@ -6,10 +6,13 @@ import android.os.Process;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.telecom.cottoncrosnier.logorecognition.image.ImageUtils;
 import com.telecom.cottoncrosnier.logorecognition.image.MatManager;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 import com.telecom.cottoncrosnier.logorecognition.reference.BrandList;
 import com.telecom.cottoncrosnier.logorecognition.reference.RefDescriptors;
+
+import java.io.File;
 
 public class AnalyzePhotoService extends IntentService {
 
@@ -30,7 +33,8 @@ public class AnalyzePhotoService extends IntentService {
         if (intent != null) {
             Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
 
-            final MatManager matManager = new MatManager(intent.getData().getPath());
+            File bitmapFile = ImageUtils.scaleBitmapDown(getBaseContext(), intent.getData(), 500);
+            final MatManager matManager = new MatManager(bitmapFile.getPath());
             handleActionAnalyze(matManager);
         }
     }
