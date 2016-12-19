@@ -1,4 +1,3 @@
-
 package com.telecom.cottoncrosnier.logorecognition;
 
 import android.app.Activity;

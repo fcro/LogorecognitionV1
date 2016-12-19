@@ -72,10 +72,16 @@ public class AnalizePhotoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
-                resultIntent.putExtra(MainActivity.KEY_PHOTO_BRAND, mBrand);
-                //Log.d(TAG, "onClick: lat"+mLatLng.toString());
-                setResult(RESULT_OK, resultIntent);
+
+                if (mBrand != null) {
+                    resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
+                    resultIntent.putExtra(MainActivity.KEY_PHOTO_BRAND, mBrand);
+                    //Log.d(TAG, "onClick: lat"+mLatLng.toString());
+                    setResult(RESULT_OK, resultIntent);
+                } else {
+                    setResult(RESULT_CANCELED, resultIntent);
+                }
+
                 finish();
             }
         });
@@ -94,24 +100,28 @@ public class AnalizePhotoActivity extends Activity {
 
 
     private void displayResult(Brand brand) {
-        Log.d(TAG, "displayResult:: brand = " + brand.getBrandName());
+        Log.d(TAG, "displayResult:: brand = " + brand);
 
         mBrand = brand;
 
         mProgressDialog.dismiss();
-
         mButton.setVisibility(View.VISIBLE);
 
-        mBrandNameTextView.setText(mBrand.getBrandName());
-        mBrandInfoTextView.setText(mBrand.getInfo());
+        if (mBrand != null) {
+            mBrandNameTextView.setText(mBrand.getBrandName());
+            mBrandInfoTextView.setText(mBrand.getInfo());
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        Bitmap bitmap = scaleBitmapDown(
-                BitmapFactory.decodeFile(mBrand.getLogo(this), options),
-                300);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            Bitmap bitmap = scaleBitmapDown(
+                    BitmapFactory.decodeFile(mBrand.getLogo(this), options),
+                    300);
 
-        mImageView.setImageBitmap(bitmap);
+            mImageView.setImageBitmap(bitmap);
+        } else {
+            mBrandNameTextView.setText(R.string.no_result);
+            mButton.setText(R.string.nok_button);
+        }
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
     }

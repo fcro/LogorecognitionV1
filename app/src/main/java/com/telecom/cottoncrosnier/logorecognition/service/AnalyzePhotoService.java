@@ -40,11 +40,11 @@ public class AnalyzePhotoService extends IntentService {
     }
 
     private void handleActionAnalyze(final MatManager matManager) {
-        Brand bestBrand = BrandList.getBrand("apple");
+        Brand bestBrand = null;
         long bestMatches = 0;
 
         for (Brand brand : BrandList.getBrands()) {
-            Log.d(TAG, "handleActionAnalyze:: bestBrand = " + bestBrand.getBrandName() +
+            Log.d(TAG, "handleActionAnalyze:: bestBrand = " + bestBrand +
                     " bestMatches = " + bestMatches);
             long matches =
                     matManager.getMatchesWith(RefDescriptors.getDescriptors(brand.getBrandName()));
@@ -56,7 +56,7 @@ public class AnalyzePhotoService extends IntentService {
             }
         }
 
-        Log.d(TAG, "handleActionAnalyze: broadcasting bestBrand = " + bestBrand.getBrandName());
+        Log.d(TAG, "handleActionAnalyze: broadcasting bestBrand = " + bestBrand);
         Intent localIntent = new Intent(BROADCAST_ACTION_ANALYZE).putExtra(ANALYZE_RESULT, bestBrand);
         LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
     }

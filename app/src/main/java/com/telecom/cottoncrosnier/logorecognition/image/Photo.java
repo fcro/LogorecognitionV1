@@ -2,7 +2,6 @@ package com.telecom.cottoncrosnier.logorecognition.image;
 
 import android.graphics.Bitmap;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 
 /**

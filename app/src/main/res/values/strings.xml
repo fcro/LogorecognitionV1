@@ -7,7 +7,8 @@
     <string name="dialog_select_gallery">Gallery</string>
     <string name="photo_ok">Photo Ok</string>
     <string name="description">Description</string>
-    <string name="ok_Button">Description ok</string>
+    <string name="ok_button">Description ok</string>
+    <string name="nok_button">Return</string>
     <string name="toast_photo_ok">Photo taken and added</string>
     <string name="toast_photo_canceled">Photo not taken</string>
     <string name="toast_gallery_canceled">No photo selected</string>
@@ -19,4 +20,5 @@
     <string name="progress_analyzing">Analyzing image</string>
     <string name="progress_initializing">Initializing database</string>
     <string name="wait">Please wait</string>
+    <string name="no_result">No logo found</string>
 </resources>
