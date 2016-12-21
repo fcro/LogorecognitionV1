@@ -1,18 +1,9 @@
 package com.telecom.cottoncrosnier.logorecognition.image;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Log;
-
-import com.telecom.cottoncrosnier.logorecognition.Utils;
-import com.telecom.cottoncrosnier.logorecognition.activity.MainActivity;
 
 import org.bytedeco.javacpp.opencv_features2d.DMatchVectorVector;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class ImageUtils {
@@ -65,6 +56,7 @@ public class ImageUtils {
         return brandNewMatches;
     }
 
+
     public static long getBestMatch(List<DMatchVectorVector> matchesList) {
         long best = 0;
 
@@ -77,36 +69,24 @@ public class ImageUtils {
         return best;
     }
 
-    public static File scaleBitmapDown(Context context, Uri bitmapUri, int maxDimension) {
-        Bitmap bitmap;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(
-                    MainActivity.getContext().getContentResolver(), bitmapUri);
-            Log.d(TAG, "scaleBitmapDown: bitmap = " + bitmap.getWidth()+ " px * " + bitmap.getHeight());
 
-            int originalWidth = bitmap.getWidth();
-            int originalHeight = bitmap.getHeight();
-            int resizedWidth = maxDimension;
-            int resizedHeight = maxDimension;
+    public static Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
 
-            if (originalHeight > originalWidth) {
-                resizedHeight = maxDimension;
-                resizedWidth = (int) (resizedHeight * (float) originalWidth / (float) originalHeight);
-            } else if (originalWidth > originalHeight) {
-                resizedWidth = maxDimension;
-                resizedHeight = (int) (resizedWidth * (float) originalHeight / (float) originalWidth);
-            } else if (originalHeight == originalWidth) {
-                resizedHeight = maxDimension;
-                resizedWidth = maxDimension;
-            }
+        int originalWidth = bitmap.getWidth();
+        int originalHeight = bitmap.getHeight();
+        int resizedWidth = maxDimension;
+        int resizedHeight = maxDimension;
 
-            bitmap = Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
-
-            Log.d(TAG, "scaleBitmapDown: lastpathseg = " + bitmapUri.getLastPathSegment());
-            return Utils.bitmapToCache(context, bitmap, bitmapUri.getLastPathSegment());
-        } catch (IOException e) {
-            Log.e(TAG, "scaleBitmapDown: IOE");
-            return null;
+        if (originalHeight > originalWidth) {
+            resizedHeight = maxDimension;
+            resizedWidth = (int) (resizedHeight * (float) originalWidth / (float) originalHeight);
+        } else if (originalWidth > originalHeight) {
+            resizedWidth = maxDimension;
+            resizedHeight = (int) (resizedWidth * (float) originalHeight / (float) originalWidth);
+        } else if (originalHeight == originalWidth) {
+            resizedHeight = maxDimension;
+            resizedWidth = maxDimension;
         }
+        return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
 }

@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         }).start();
 
         mProgressDialog = ProgressDialog.show(
-                this, getString(R.string.progress_initializing), getString(R.string.wait));
+                this, getString(R.string.progress_initializing), getString(R.string.progress_wait));
 
         mArrayPhoto = new ArrayList<>();
         mPhotoAdapter = new PhotoArrayAdapter(

@@ -2,23 +2,23 @@
     <string name="app_name">Logo recognition</string>
     <string name="action_settings">Settings</string>
 
+    <string name="menu_view_web_site">View web Site</string>
+    <string name="menu_delete_photo">Delete photo</string>
+
     <string name="dialog_select_prompt">Choose a picture</string>
     <string name="dialog_select_camera">Camera</string>
     <string name="dialog_select_gallery">Gallery</string>
-    <string name="photo_ok">Photo Ok</string>
-    <string name="description">Description</string>
-    <string name="ok_button">Description ok</string>
-    <string name="nok_button">Return</string>
+
+    <string name="button_ok">Add to collection</string>
+    <string name="button_nok">Return</string>
+
     <string name="toast_photo_ok">Photo taken and added</string>
     <string name="toast_photo_canceled">Photo not taken</string>
     <string name="toast_gallery_canceled">No photo selected</string>
-    <string name="view_web_site">View web Site</string>
-    <string name="use_the_floating_action_button_to_select_an_image">Use the floating action button to select an image.</string>
-    <string name="view_map">View map</string>
-    <string name="wait_localisation">Waiting for localisation</string>
-    <string name="delete_photo">Delete photo</string>
+
     <string name="progress_analyzing">Analyzing image</string>
     <string name="progress_initializing">Initializing database</string>
-    <string name="wait">Please wait</string>
+    <string name="progress_wait">Please wait</string>
+
     <string name="no_result">No logo found</string>
 </resources>

@@ -2,10 +2,13 @@ package com.telecom.cottoncrosnier.logorecognition.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Process;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.telecom.cottoncrosnier.logorecognition.Utils;
 import com.telecom.cottoncrosnier.logorecognition.image.ImageUtils;
 import com.telecom.cottoncrosnier.logorecognition.image.MatManager;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
@@ -33,7 +36,12 @@ public class AnalyzePhotoService extends IntentService {
         if (intent != null) {
             Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
 
-            File bitmapFile = ImageUtils.scaleBitmapDown(getBaseContext(), intent.getData(), 500);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmap = ImageUtils.scaleBitmapDown(BitmapFactory.decodeFile(intent.getData().getPath(), options), 500);
+
+            File bitmapFile = Utils.bitmapToCache(getBaseContext(), bitmap, intent.getData().getLastPathSegment());
+
             final MatManager matManager = new MatManager(bitmapFile.getPath());
             handleActionAnalyze(matManager);
         }

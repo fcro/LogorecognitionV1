@@ -24,6 +24,8 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
     private static final String TAG = ArrayAdapter.class.getSimpleName();
 
+    private static final int INVALID_POSITION = -1;
+
 
     private Context context;
     private int layoutResourceId;
@@ -37,7 +39,7 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
         this.context = context;
         this.layoutResourceId = layoutResourceId;
         this.photoArrayList = photoArrayList;
-        this.selectedRow = -1;
+        this.selectedRow = INVALID_POSITION;
     }
 
     @Override
@@ -76,7 +78,7 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
     @Override
     public void remove(Photo photo) {
-        selectedRow = -1;
+        selectedRow = INVALID_POSITION;
         super.remove(photo);
     }
 
@@ -89,6 +91,6 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
 
     public void selectRow(int selectedRow) {
-        this.selectedRow = (selectedRow == this.selectedRow ? -1 : selectedRow);
+        this.selectedRow = (selectedRow == this.selectedRow ? INVALID_POSITION : selectedRow);
     }
 }

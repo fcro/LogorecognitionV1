@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.telecom.cottoncrosnier.logorecognition.R;
+import com.telecom.cottoncrosnier.logorecognition.image.ImageUtils;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 import com.telecom.cottoncrosnier.logorecognition.service.AnalyzePhotoService;
 
@@ -57,7 +58,7 @@ public class AnalizePhotoActivity extends Activity {
         final Uri imgPath = b.getParcelable(MainActivity.KEY_PHOTO_PATH);
 
         mProgressDialog = ProgressDialog.show(
-                this, getString(R.string.progress_analyzing), getString(R.string.wait));
+                this, getString(R.string.progress_analyzing), getString(R.string.progress_wait));
 
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -113,39 +114,16 @@ public class AnalizePhotoActivity extends Activity {
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.RGB_565;
-            Bitmap bitmap = scaleBitmapDown(
+            Bitmap bitmap = ImageUtils.scaleBitmapDown(
                     BitmapFactory.decodeFile(mBrand.getLogo(this), options),
                     300);
 
             mImageView.setImageBitmap(bitmap);
         } else {
             mBrandNameTextView.setText(R.string.no_result);
-            mButton.setText(R.string.nok_button);
+            mButton.setText(R.string.button_nok);
         }
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
     }
-
-
-
-    public Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
-
-        int originalWidth = bitmap.getWidth();
-        int originalHeight = bitmap.getHeight();
-        int resizedWidth = maxDimension;
-        int resizedHeight = maxDimension;
-
-        if (originalHeight > originalWidth) {
-            resizedHeight = maxDimension;
-            resizedWidth = (int) (resizedHeight * (float) originalWidth / (float) originalHeight);
-        } else if (originalWidth > originalHeight) {
-            resizedWidth = maxDimension;
-            resizedHeight = (int) (resizedWidth * (float) originalHeight / (float) originalWidth);
-        } else if (originalHeight == originalWidth) {
-            resizedHeight = maxDimension;
-            resizedWidth = maxDimension;
-        }
-        return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
-    }
-
 }
