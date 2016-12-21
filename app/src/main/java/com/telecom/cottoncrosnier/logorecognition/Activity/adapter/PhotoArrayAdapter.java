@@ -73,6 +73,14 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
         return row;
     }
 
+
+    @Override
+    public void remove(Photo photo) {
+        selectedRow = -1;
+        super.remove(photo);
+    }
+
+
     private static class PhotoHolder {
         ImageView photoImage;
         TextView photoBrandName;

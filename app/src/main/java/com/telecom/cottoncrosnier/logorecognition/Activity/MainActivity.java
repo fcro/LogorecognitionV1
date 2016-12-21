@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle b = data.getExtras();
             Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
             Brand brand = (Brand) b.getSerializable(KEY_PHOTO_BRAND);
-            Log.d(TAG, "brand = " + brand.toString());
+            Log.d(TAG, "brand = " + brand);
             try {
                 Bitmap bitmap = ThumbnailUtils.extractThumbnail(
                         MediaStore.Images.Media.getBitmap(getContentResolver(), imgPath),
@@ -263,19 +263,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mPhotoAdapter.remove(mArrayPhoto.get(mId));
-
-        final int arrayAdapterSize = mArrayPhoto.size();
-        if (arrayAdapterSize <= mId) {
-            if (arrayAdapterSize == 0) {
-                mId = INVALID_POSITION;
-            } else {
-                mId = arrayAdapterSize - 1;
-                mPhotoListView.performItemClick(
-                        mPhotoListView.getChildAt(mId),
-                        mId,
-                        mPhotoListView.getItemIdAtPosition(mId));
-            }
-        }
+        mId = INVALID_POSITION;
     }
 
     private void showButton() {
