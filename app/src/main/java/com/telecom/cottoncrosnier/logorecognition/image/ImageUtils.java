@@ -56,6 +56,11 @@ public class ImageUtils {
         return brandNewMatches;
     }
 
+    /**
+     * Retourne le meilleur match d'une list de match
+     * @param matchesList List contenant tous les matchs
+     * @return meilleur match
+     */
 
     public static long getBestMatch(List<DMatchVectorVector> matchesList) {
         long best = 0;
@@ -69,7 +74,12 @@ public class ImageUtils {
         return best;
     }
 
-
+    /**
+     * Reduit la taille d'une image
+     * @param bitmap image a reduire
+     * @param maxDimension dimension de l'image de sortie
+     * @return image reduite
+     */
     public static Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
 
         int originalWidth = bitmap.getWidth();

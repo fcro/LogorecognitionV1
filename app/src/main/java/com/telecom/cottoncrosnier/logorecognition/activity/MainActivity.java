@@ -33,6 +33,9 @@ import com.telecom.cottoncrosnier.logorecognition.reference.JsonBrandReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Activité principale appelée au demarrage
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -52,13 +55,16 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Photo> mArrayPhoto;
     private ArrayAdapter<Photo> mPhotoAdapter;
-    private ListView mPhotoListView;
 
     private ProgressDialog mProgressDialog;
 
     private int mId;
 
-
+    /**
+     * Appelée au demarrage de l'application, appelle l'initialisation des marques, affichage des photos
+     * et bouton de choix de photo
+     * @param savedInstanceState Elements sauvegardés lors du dernier arret de l'application (non utilisé)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
                             .readJsonStream());
 
                     showButton();
-                } catch (IOException e) {} finally {
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
                     Thread.currentThread().interrupt();
                 }
             }
@@ -93,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
         initListView();
     }
 
+    /**
+     * créée le menu option
+     * @param menu menu a afficher
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -100,6 +113,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Gere les clicks sur les items du menu option
+     * @param item item selectionné dans le menu option
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -119,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Appelée quand l'activité reprend
+     * @param requestCode code  de l'activité qui a été appelée
+     * @param resultCode code de retour de l'activité appelée (ok / nok)
+     * @param data valeur de retour de l'activité appelée
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult() called with: requestCode = [" + requestCode + "], resultCode = [" + resultCode + "], data = [" + data + "]");
@@ -138,9 +162,10 @@ public class MainActivity extends AppCompatActivity {
             Bundle b = data.getExtras();
             Uri imgPath = b.getParcelable(KEY_PHOTO_PATH);
 
-            Log.d(TAG, "onActivityResult:: imgPath = " + imgPath.toString());
-
-            startAnalyze(imgPath);
+            if(imgPath != null){
+                Log.d(TAG, "onActivityResult:: imgPath = " + imgPath.toString());
+                startAnalyze(imgPath);
+            }
 
         } else if (requestCode == TAKE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
             Log.d(TAG, "onActivityResult: take photo & canceled");
@@ -176,6 +201,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Démarre l'activité pour afficher la galerie et choisir une photo
+     */
     public void startGalleryChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -184,37 +212,57 @@ public class MainActivity extends AppCompatActivity {
                 GALLERY_IMAGE_REQUEST);
     }
 
+    /**
+     * Démarre l'activité pour prendre une photo
+     */
     public void startCamera() {
         Intent startTakePhoto = new Intent(MainActivity.this, TakePhotoActivity.class);
         startActivityForResult(startTakePhoto, TAKE_PHOTO_REQUEST);
     }
 
-
+    /**
+     * Démarre l'activité pour analyser la photo
+     * @param uri chemin de la photo
+     */
     private void startAnalyze(Uri uri) {
         Intent startAnalyze = new Intent(MainActivity.this, AnalizePhotoActivity.class);
         startAnalyze.putExtra(KEY_PHOTO_PATH, uri);
         startActivityForResult(startAnalyze, ANALYZE_PHOTO_REQUEST);
     }
 
+    /**
+     * Démarre l'activite pour afficher un browser
+     */
     private void startBrowser() {
         Log.d(TAG, "onOptionsItemSelected: view website");
         if (mId != INVALID_POSITION) {
-            Intent startWebBrowser = new Intent(MainActivity.this, LaunchBrowserActivity.class);
-            startWebBrowser.putExtra(KEY_URL, mPhotoAdapter.getItem(mId).getBrand().getUrl().toString());
-            startActivityForResult(startWebBrowser, VIEW_BROWSER_REQUEST);
+            Photo photo = mPhotoAdapter.getItem(mId);
+            if(photo != null){
+                Intent startWebBrowser = new Intent(MainActivity.this, LaunchBrowserActivity.class);
+                startWebBrowser.putExtra(KEY_URL, photo.getBrand().getUrl().toString());
+                startActivityForResult(startWebBrowser, VIEW_BROWSER_REQUEST);
+            }
+
         } else {
             Utils.toast(this,"please select an item");
         }
     }
 
+    /**
+     * Ajoute une photo à mPhotoAdapter pour l'afficher
+     * @param photo photo à aafficher
+     */
     private void addImage(Photo photo) {
         Log.d(TAG, "addImage() called with: photo = [" + photo.toString() + "]");
         mPhotoAdapter.add(photo);
     }
 
+    /**
+     * Initialise la listView affichant les photos
+     */
     private void initListView() {
         mId = INVALID_POSITION;
-        mPhotoListView = (ListView) findViewById(R.id.img_list_view);
+        ListView mPhotoListView = (ListView) findViewById(R.id.img_list_view);
         mPhotoListView.setAdapter(mPhotoAdapter);
         mPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -229,6 +277,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initialise le bouton permettant le choix de la photo
+     */
     private void initFloatingButton() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -256,6 +307,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Supprime une photo de mPhotoAdapter
+     */
     private void deletePhoto() {
         if (mId == INVALID_POSITION) {
             Utils.toast(this,"please select an item");
@@ -266,6 +320,9 @@ public class MainActivity extends AppCompatActivity {
         mId = INVALID_POSITION;
     }
 
+    /**
+     * Affiche le bouton permettant le choix de la photo
+     */
     private void showButton() {
         runOnUiThread(new Runnable() {
             @Override
@@ -279,6 +336,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Retourne le context de MainActivity
+     * @return context de l'activité
+     */
     public static Context getContext() {
         return context;
     }

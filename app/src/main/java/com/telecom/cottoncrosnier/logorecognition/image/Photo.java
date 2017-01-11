@@ -4,10 +4,6 @@ import android.graphics.Bitmap;
 
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 
-/**
- * Created by matthieu on 26/10/16.
- */
-
 public class Photo {
 
     private Bitmap mBitmap;

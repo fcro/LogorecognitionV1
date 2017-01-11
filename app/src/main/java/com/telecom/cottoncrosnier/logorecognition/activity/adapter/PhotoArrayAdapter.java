@@ -3,6 +3,7 @@ package com.telecom.cottoncrosnier.logorecognition.activity.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,6 @@ import com.telecom.cottoncrosnier.logorecognition.R;
 import com.telecom.cottoncrosnier.logorecognition.image.Photo;
 
 import java.util.ArrayList;
-
-/**
- * Created by fcro on 27/10/2016.
- */
 
 public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
@@ -43,6 +40,7 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
     }
 
     @Override
+    @NonNull
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         PhotoHolder holder;

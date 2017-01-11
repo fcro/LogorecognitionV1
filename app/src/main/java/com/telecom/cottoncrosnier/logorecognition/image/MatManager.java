@@ -14,10 +14,6 @@ import static org.bytedeco.javacpp.opencv_core.NORM_L2;
 import static org.bytedeco.javacpp.opencv_features2d.*;
 import static org.bytedeco.javacpp.opencv_highgui.*;
 
-/**
- * Created by fcro on 16/11/2016.
- */
-
 public class MatManager {
 
     private static final String TAG = MatManager.class.getSimpleName();
@@ -81,9 +77,7 @@ public class MatManager {
         BFMatcher matcher = new BFMatcher(NORM_L2, false);
         matcher.knnMatch(mDescriptor, otherDescriptor, matches, 2);
 
-        DMatchVectorVector bestMatches = ImageUtils.refineMatches(matches);
-
-        return bestMatches;
+        return ImageUtils.refineMatches(matches);
     }
 
     public long getMatchesWith(List<Mat> otherDescriptors) {

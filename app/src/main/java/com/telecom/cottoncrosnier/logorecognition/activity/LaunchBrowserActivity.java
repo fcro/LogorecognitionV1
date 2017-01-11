@@ -8,15 +8,18 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Created by matthieu on 27/10/16.
+ * Activité permettant l'affichage d'un browser
  */
-
 public class LaunchBrowserActivity extends Activity {
 
     private static final String TAG = LaunchBrowserActivity.class.getSimpleName();
 
     private final static int VIEW_BROWSER_REQUEST = 1;
 
+    /**
+     * Appelée au demarrage de l'activité, appelle le demarrage du browser
+     * @param savedInstanceState Elements sauvegardés lors du dernier arret de l'activité (non utilisé)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +30,12 @@ public class LaunchBrowserActivity extends Activity {
 
         launchBrowser(url);
     }
-
+    /**
+     * Appelée quand l'activité reprend, apres avoir quitté le browser
+     * @param requestCode code  de l'activité qui a été appelée
+     * @param resultCode code de retour de l'activité appelée (ok / nok)
+     * @param data valeur de retour de l'activité appelée (non utilisé)
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -37,12 +45,20 @@ public class LaunchBrowserActivity extends Activity {
         }
     }
 
+    /**
+     * Lance l'activité affichant le browser
+     * @param url site web a afficher
+     */
     private void launchBrowser(String url) {
         Log.d(TAG, "launchBrowser() called with: url = [" + url + "]");
         toast(url);
         startActivityForResult(new Intent(Intent.ACTION_VIEW, Uri.parse(url)), VIEW_BROWSER_REQUEST);
     }
 
+    /**
+     * Appelée pour afficher un toast
+     * @param text texte à afficher
+     */
     private void toast(String text) {
         Toast.makeText(this, text,
                 Toast.LENGTH_LONG).show();
