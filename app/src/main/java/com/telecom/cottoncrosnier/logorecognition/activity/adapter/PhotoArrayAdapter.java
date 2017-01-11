@@ -3,6 +3,7 @@ package com.telecom.cottoncrosnier.logorecognition.activity.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,8 @@ import com.telecom.cottoncrosnier.logorecognition.image.Photo;
 import java.util.ArrayList;
 
 /**
- * Created by fcro on 27/10/2016.
+ * Class modifiant ArrayAdapter pour afficher toutes les photo dans une list sur MainActivity
  */
-
 public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
 
@@ -33,6 +33,12 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
 
     private int selectedRow;
 
+    /**
+     * Constructeur, initialise les variables
+     * @param context context de l'activité pour afficher l'adapter
+     * @param layoutResourceId layout sur lequel est affiché l'adapter
+     * @param photoArrayList list a afficher dans l'adapter
+     */
     public PhotoArrayAdapter(Context context, int layoutResourceId,
                              ArrayList<Photo> photoArrayList) {
         super(context, layoutResourceId, photoArrayList);
@@ -42,7 +48,15 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
         this.selectedRow = INVALID_POSITION;
     }
 
+    /**
+     * Retourne une vue qui affiche les données à une position donée
+     * @param position position de la donnée a afficher
+     * @param convertView ancienne vue
+     * @param parent le parent sur lequel la vue est rattachée
+     * @return
+     */
     @Override
+    @NonNull
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         PhotoHolder holder;
@@ -75,21 +89,29 @@ public class PhotoArrayAdapter extends ArrayAdapter<Photo> {
         return row;
     }
 
-
+    /**
+     * Supprime une photo
+     * @param photo photo a supprimer
+     */
     @Override
     public void remove(Photo photo) {
         selectedRow = INVALID_POSITION;
         super.remove(photo);
     }
 
-
+    /**
+     * Class de stockage de la vue fille pour le pattern ViewHolder
+     */
     private static class PhotoHolder {
         ImageView photoImage;
         TextView photoBrandName;
         TextView photoBrandInfo;
     }
 
-
+    /**
+     * Permet de selectionner une colone
+     * @param selectedRow colone selectionnée
+     */
     public void selectRow(int selectedRow) {
         this.selectedRow = (selectedRow == this.selectedRow ? INVALID_POSITION : selectedRow);
     }

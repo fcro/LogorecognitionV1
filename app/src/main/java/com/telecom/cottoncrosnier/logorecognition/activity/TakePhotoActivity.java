@@ -14,9 +14,8 @@ import com.telecom.cottoncrosnier.logorecognition.Utils;
 import java.io.File;
 
 /**
- * Created by matthieu on 24/10/16.
+ * Activité permettant le demarrage de l'appareil photo
  */
-
 public class TakePhotoActivity extends Activity {
 
     private static final String TAG = TakePhotoActivity.class.getSimpleName();
@@ -28,27 +27,22 @@ public class TakePhotoActivity extends Activity {
 
     public static String FILE_NAME = "temp.jpg";
 
+    /**
+     * Appelée au demarrage de l'activité, appelle le demarage de l'appareil photo
+     * @param savedInstanceState Elements sauvegardés lors du dernier arret de l'activité (non utilisé)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startCamera();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
+    /**
+     * Appelée quand l'activité reprend
+     * @param requestCode code  de l'activité qui a été appelée
+     * @param resultCode code de retour de l'activité appelée (ok / nok)
+     * @param data valeur de retour de l'activité appelée
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -65,6 +59,12 @@ public class TakePhotoActivity extends Activity {
         }
     }
 
+    /**
+     * Appelée si les permision sont demandées à l'utilisateur ( premiere utilisation)
+     * @param requestCode code de la requete
+     * @param permissions permissions demandées
+     * @param grantResults code de retour (ok / nok)
+     */
     @Override
     public void onRequestPermissionsResult(
             int requestCode, String[] permissions, int[] grantResults) {
@@ -77,6 +77,9 @@ public class TakePhotoActivity extends Activity {
         }
     }
 
+    /**
+     * Demare l'activité pour prendre une photo
+     */
     public void startCamera() {
         if (Utils.requestPermission(
                 this,
@@ -90,6 +93,10 @@ public class TakePhotoActivity extends Activity {
         }
     }
 
+    /**
+     * recupere la photo prise
+     * @return fichier contenant la photo
+     */
     public File getCameraFile() {
         File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         String fileName = mPhotoNumber + FILE_NAME;

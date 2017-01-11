@@ -22,11 +22,9 @@ import com.telecom.cottoncrosnier.logorecognition.image.ImageUtils;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 import com.telecom.cottoncrosnier.logorecognition.service.AnalyzePhotoService;
 
-
 /**
- * Created by matthieu on 24/10/16.
+ * Activité gerant l'analyse des photos
  */
-
 public class AnalizePhotoActivity extends Activity {
 
     private final static String TAG = AnalizePhotoActivity.class.getSimpleName();
@@ -42,6 +40,10 @@ public class AnalizePhotoActivity extends Activity {
 
     private ProgressDialog mProgressDialog;
 
+    /**
+     * Appelée au demarrage de l'activité, initialise l'affichage et appelle l'analyse de la photo
+     * @param savedInstanceState Elements sauvegardés lors du dernier arret de l'activité (non utilisé)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +79,6 @@ public class AnalizePhotoActivity extends Activity {
                 if (mBrand != null) {
                     resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
                     resultIntent.putExtra(MainActivity.KEY_PHOTO_BRAND, mBrand);
-                    //Log.d(TAG, "onClick: lat"+mLatLng.toString());
                     setResult(RESULT_OK, resultIntent);
                 } else {
                     setResult(RESULT_CANCELED, resultIntent);
@@ -92,14 +93,10 @@ public class AnalizePhotoActivity extends Activity {
         startService(analyzeIntent);
     }
 
-    @Override
-    protected void onDestroy() {
-        Log.d(TAG, "onDestroy: ");
-        super.onDestroy();
-    }
-
-
-
+    /**
+     * Affiche les resultats
+     * @param brand marque a afficher
+     */
     private void displayResult(Brand brand) {
         Log.d(TAG, "displayResult:: brand = " + brand);
 
