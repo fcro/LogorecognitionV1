@@ -23,11 +23,11 @@ import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 import com.telecom.cottoncrosnier.logorecognition.service.AnalyzePhotoService;
 
 /**
- * Activité gerant l'analyse des photos
+ * Activité gérant l'analyse des photos.
  */
 public class AnalizePhotoActivity extends Activity {
 
-    private final static String TAG = AnalizePhotoActivity.class.getSimpleName();
+    private static final String TAG = AnalizePhotoActivity.class.getSimpleName();
 
     private Brand mBrand;
 
@@ -41,8 +41,9 @@ public class AnalizePhotoActivity extends Activity {
     private ProgressDialog mProgressDialog;
 
     /**
-     * Appelée au demarrage de l'activité, initialise l'affichage et appelle l'analyse de la photo
-     * @param savedInstanceState Elements sauvegardés lors du dernier arret de l'activité (non utilisé)
+     * Appelée au demarrage de l'activité, initialise l'affichage et appelle l'analyse de la photo.
+     *
+     * @param savedInstanceState Éléments sauvegardés lors du dernier arrêt de l'activité (non utilisé).
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +95,9 @@ public class AnalizePhotoActivity extends Activity {
     }
 
     /**
-     * Affiche les resultats
-     * @param brand marque a afficher
+     * Affiche la marque trouvée.
+     *
+     * @param brand marque à afficher.
      */
     private void displayResult(Brand brand) {
         Log.d(TAG, "displayResult:: brand = " + brand);

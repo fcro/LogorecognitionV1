@@ -15,7 +15,7 @@ import static org.bytedeco.javacpp.opencv_features2d.*;
 import static org.bytedeco.javacpp.opencv_highgui.*;
 
 /**
- * Class regroupant les methodes pour le traitement des matrices
+ * Classe regroupant les méthodes pour le traitement des matrices.
  */
 public class MatManager {
 
@@ -32,8 +32,9 @@ public class MatManager {
     private Mat mDescriptor;
 
     /**
-     * Constructeur, crée le sift et appel le calcul du descripteur
-     * @param path chemin de l'image a traiter
+     * Constructeur, crée le sift et appelle le calcul du descripteur.
+     *
+     * @param path chemin de l'image à traiter.
      */
     public MatManager(String path) {
         Log.d(TAG, "MatManager() called with: path = [" + path + "]");
@@ -43,9 +44,10 @@ public class MatManager {
     }
 
     /**
-     * Calcul les keypoints d'une matrice
-     * @param mat Matrice de la photo a traiter
-     * @return keypoints de la matrice
+     * Calcule les keypoints d'une matrice.
+     *
+     * @param mat Matrice de la photo à traiter.
+     * @return keypoints de la matrice.
      */
     private KeyPoint getKeypoints(Mat mat) {
         KeyPoint keypoints = new KeyPoint();
@@ -58,8 +60,9 @@ public class MatManager {
     }
 
     /**
-     * Calcul le descripteur
-     * @return descripteur de la matrice
+     * Calcule le descripteur.
+     *
+     * @return descripteur de la matrice.
      */
     private Mat computeDescriptor() {
         Mat descriptor = new Mat();
@@ -70,17 +73,19 @@ public class MatManager {
     }
 
     /**
-     * Retourne le descripteur de l'image
-     * @return descripteur de la matrice
+     * Retourne le descripteur de l'image.
+     *
+     * @return descripteur de la matrice.
      */
     public Mat getDescriptor() {
         return mDescriptor;
     }
 
     /**
-     * Calcul les meilleurs matchs entre une matrice et la matrice de reference
-     * @param otherDescriptor mat d'une image de reference
-     * @return meilleurs matchs
+     * Calcule les meilleurs matches entre le matrice et une matrice de référence.
+     *
+     * @param otherDescriptor Mat d'une image de référence.
+     * @return meilleurs matches.
      */
     public DMatchVectorVector getMatchesWith(Mat otherDescriptor) {
         DMatchVectorVector matches = new DMatchVectorVector();
@@ -92,9 +97,10 @@ public class MatManager {
     }
 
     /**
-     * Calcul le meilleurs match entre l'image de reference et les marques
-     * @param otherDescriptors List de Mat des images de references
-     * @return meilleurs match
+     * Calcule les meilleurs matches entre la matrice et une liste de matrices de référence.
+     *
+     * @param otherDescriptors List de Mat des images de référence.
+     * @return meilleurs matches.
      */
     public long getMatchesWith(List<Mat> otherDescriptors) {
         List<DMatchVectorVector> matchesArrayList = new ArrayList<DMatchVectorVector>();

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
 
 /**
- * Class qui decrit une photo avec une image et une marque
+ * Classe qui décrit une photo avec une image et une marque.
  */
 public class Photo {
 
@@ -13,9 +13,9 @@ public class Photo {
     private Brand mBrand;
 
     /**
-     * Constructeur, initialise l'image et la marque
-     * @param bitmap photo
-     * @param brand marque sur la photo
+     * Constructeur, initialise l'image et la marque.
+     * @param bitmap photo.
+     * @param brand marque sur la photo.
      */
     public Photo(Bitmap bitmap, Brand brand) {
         this.mBitmap = bitmap;
@@ -23,24 +23,27 @@ public class Photo {
     }
 
     /**
-     * Retourne la photo
-     * @return photo
+     * Retourne la photo.
+     *
+     * @return photo.
      */
     public Bitmap getBitmap(){
         return mBitmap;
     }
 
     /**
-     * Retourne la marque sur la photo
-     * @return marque
+     * Retourne la marque sur la photo.
+     *
+     * @return marque.
      */
     public Brand getBrand() {
         return mBrand;
     }
 
     /**
-     * Retourne une phrase decrivant la photo (image, marque, information de la marque)
-     * @return phrase pour decrire une photo
+     * Retourne une phrase décrivant la photo (image, marque, information de la marque).
+     *
+     * @return phrase pour décrire une photo.
      */
     public String toString() {
         return "[image = " + getBitmap().toString() +

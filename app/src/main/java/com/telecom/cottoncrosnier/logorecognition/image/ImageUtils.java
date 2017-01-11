@@ -7,16 +7,17 @@ import org.bytedeco.javacpp.opencv_features2d.DMatchVectorVector;
 import java.util.List;
 
 /**
- * Class regroupant les methodes utilitaires pour les images
+ * Classe regroupant les méthodes utilitaires pour les images.
  */
 public class ImageUtils {
 
     private static final String TAG = ImageUtils.class.getSimpleName();
 
     /**
-     * affine  les matchs pour avoir les meilleurs
-     * @param oldMatches ensemble de match a affiner
-     * @return
+     * Affine les matches pour garder les meilleurs.
+     *
+     * @param oldMatches ensemble de matches à affiner.
+     * @return meilleurs matches trouvés.
      */
     public static DMatchVectorVector refineMatches(DMatchVectorVector oldMatches) {
         // Ratio of Distances
@@ -62,9 +63,10 @@ public class ImageUtils {
     }
 
     /**
-     * Retourne le meilleur match d'une list de match
-     * @param matchesList List contenant tous les matchs
-     * @return meilleur match
+     * Retourne le meilleur match d'une list de matches.
+     *
+     * @param matchesList List contenant tous les matches.
+     * @return meilleur match.
      */
 
     public static long getBestMatch(List<DMatchVectorVector> matchesList) {
@@ -80,10 +82,11 @@ public class ImageUtils {
     }
 
     /**
-     * Reduit la taille d'une image
-     * @param bitmap image a reduire
-     * @param maxDimension dimension de l'image de sortie
-     * @return image reduite
+     * Réduit la taille d'une image.
+     *
+     * @param bitmap image à réduire.
+     * @param maxDimension dimension de l'image de sortie.
+     * @return image réduite.
      */
     public static Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
 

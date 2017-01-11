@@ -14,7 +14,7 @@ import com.telecom.cottoncrosnier.logorecognition.Utils;
 import java.io.File;
 
 /**
- * Activité permettant le demarrage de l'appareil photo
+ * Activité permettant le démarrage de l'appareil photo.
  */
 public class TakePhotoActivity extends Activity {
 
@@ -28,8 +28,9 @@ public class TakePhotoActivity extends Activity {
     public static String FILE_NAME = "temp.jpg";
 
     /**
-     * Appelée au demarrage de l'activité, appelle le demarage de l'appareil photo
-     * @param savedInstanceState Elements sauvegardés lors du dernier arret de l'activité (non utilisé)
+     * Appelée au demarrage de l'activité, appelle le démarrage de l'appareil photo.
+     *
+     * @param savedInstanceState Éléments sauvegardés lors du dernier arrêt de l'activité (non utilisé).
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +39,11 @@ public class TakePhotoActivity extends Activity {
     }
 
     /**
-     * Appelée quand l'activité reprend
-     * @param requestCode code  de l'activité qui a été appelée
-     * @param resultCode code de retour de l'activité appelée (ok / nok)
-     * @param data valeur de retour de l'activité appelée
+     * Appelée quand l'activité reprend.
+     *
+     * @param requestCode code de l'activité qui a été appelée.
+     * @param resultCode code de retour de l'activité appelée (ok / nok).
+     * @param data valeur de retour de l'activité appelée.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -60,10 +62,11 @@ public class TakePhotoActivity extends Activity {
     }
 
     /**
-     * Appelée si les permision sont demandées à l'utilisateur ( premiere utilisation)
-     * @param requestCode code de la requete
-     * @param permissions permissions demandées
-     * @param grantResults code de retour (ok / nok)
+     * Appelée si les permissions sont demandées à l'utilisateur (première utilisation).
+     *
+     * @param requestCode code de la requête.
+     * @param permissions permissions demandées.
+     * @param grantResults code de retour (ok / nok).
      */
     @Override
     public void onRequestPermissionsResult(
@@ -78,7 +81,7 @@ public class TakePhotoActivity extends Activity {
     }
 
     /**
-     * Demare l'activité pour prendre une photo
+     * Démarre l'activité pour prendre une photo.
      */
     public void startCamera() {
         if (Utils.requestPermission(
@@ -94,8 +97,9 @@ public class TakePhotoActivity extends Activity {
     }
 
     /**
-     * recupere la photo prise
-     * @return fichier contenant la photo
+     * Récupère la photo prise.
+     *
+     * @return fichier contenant la photo.
      */
     public File getCameraFile() {
         File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
