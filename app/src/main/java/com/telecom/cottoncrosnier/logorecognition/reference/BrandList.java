@@ -3,28 +3,28 @@ package com.telecom.cottoncrosnier.logorecognition.reference;
 import java.util.List;
 
 /**
- * Created by fcro on 18/11/2016.
+ * Cette classe encapsule une List d'objets {@link Brand} initialisée au lancement de l'application.
  */
-
 public class BrandList {
 
     private static List<Brand> mBrands;
 
 
+    /**
+     * Initialise la List des objets {@link Brand}.
+     *
+     * @param brands List des objets {@link Brand}.
+     */
     public static void setBrands(List<Brand> brands) {
         mBrands = brands;
     }
 
+    /**
+     * Renvoie la List des objets {@link Brand}.
+     *
+     * @return List des objets {@link Brand}.
+     */
     public static List<Brand> getBrands() {
         return mBrands;
-    }
-
-    public static Brand getBrand(String brandName) {
-        for (int i = 0; i < mBrands.size(); ++i) {
-            if (mBrands.get(i).getBrandName().toLowerCase().equals(brandName.toLowerCase()))
-                return mBrands.get(i);
-        }
-
-        return null;
     }
 }

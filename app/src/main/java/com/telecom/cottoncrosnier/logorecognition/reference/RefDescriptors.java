@@ -4,15 +4,14 @@ import android.util.Log;
 
 import org.bytedeco.javacpp.opencv_core.Mat;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by fcro on 23/11/2016.
+ * Cette classe encapsule une liste qui associe chaque marque à la List des descripteurs de ses
+ * images.
  */
-
 public class RefDescriptors {
 
     private static final String TAG = RefDescriptors.class.getSimpleName();
@@ -20,19 +19,14 @@ public class RefDescriptors {
     private static Map<String, List<Mat>> descriptors = new HashMap<String, List<Mat>>();
 
 
-    public static void addDescriptor(String brandName, Mat descriptor) {
-        ArrayList descriptorArrayList;
-
-        if (!descriptors.containsKey(brandName)) {
-            descriptorArrayList = new ArrayList();
-            descriptorArrayList.add(descriptor);
-            descriptors.put(brandName, descriptorArrayList);
-        } else {
-            descriptors.get(brandName).add(descriptor);
-        }
-    }
-
-    public static void addDescriptors(String brandName, List<Mat> descriptorList) {
+    /**
+     * <p>Ajoute un descripteur à la marque {@code brandName}.</p>
+     * <p>Si la marque n'existait pas dans la List, elle est créée.</p>
+     *
+     * @param brandName nom de la marque.
+     * @param descriptorList List des descripteurs des images de la marque.
+     */
+    static void addDescriptors(String brandName, List<Mat> descriptorList) {
         Log.d(TAG, "addDescriptors() called with: brandName = [" + brandName + "]");
         if (!descriptors.containsKey(brandName)) {
             descriptors.put(brandName, descriptorList);
@@ -41,6 +35,12 @@ public class RefDescriptors {
         }
     }
 
+    /**
+     * Renvoie la List des descripteurs de la marque {@code brandName}.
+     *
+     * @param brandName nom de la marque.
+     * @return List des descripteurs de la marque.
+     */
     public static List<Mat> getDescriptors(String brandName) {
         return descriptors.get(brandName);
     }
