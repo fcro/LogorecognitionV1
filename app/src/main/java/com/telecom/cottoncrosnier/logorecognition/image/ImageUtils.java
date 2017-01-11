@@ -6,11 +6,18 @@ import org.bytedeco.javacpp.opencv_features2d.DMatchVectorVector;
 
 import java.util.List;
 
+/**
+ * Class regroupant les methodes utilitaires pour les images
+ */
 public class ImageUtils {
 
     private static final String TAG = ImageUtils.class.getSimpleName();
 
-
+    /**
+     * affine  les matchs pour avoir les meilleurs
+     * @param oldMatches ensemble de match a affiner
+     * @return
+     */
     public static DMatchVectorVector refineMatches(DMatchVectorVector oldMatches) {
         // Ratio of Distances
         double RoD = 0.6;
@@ -44,8 +51,6 @@ public class ImageUtils {
         DMatchVectorVector brandNewMatches = new DMatchVectorVector();
         brandNewMatches.resize(newMatches.size());
         for (int i = 0; i < newMatches.size(); i++) {
-            // TODO: Move this weights into params
-            // Since minDist may be equal to 0.0, add some non-zero value
             if (newMatches.get(i, 0).distance() <= 3 * minDist) {
                 brandNewMatches.resize(sz, 1);
                 brandNewMatches.put(sz, 0, newMatches.get(i, 0));

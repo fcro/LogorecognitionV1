@@ -79,7 +79,6 @@ public class AnalizePhotoActivity extends Activity {
                 if (mBrand != null) {
                     resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
                     resultIntent.putExtra(MainActivity.KEY_PHOTO_BRAND, mBrand);
-                    //Log.d(TAG, "onClick: lat"+mLatLng.toString());
                     setResult(RESULT_OK, resultIntent);
                 } else {
                     setResult(RESULT_CANCELED, resultIntent);

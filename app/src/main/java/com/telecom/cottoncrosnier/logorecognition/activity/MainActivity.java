@@ -120,12 +120,8 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         Log.d(TAG, "onOptionsItemSelected: id = " + id);
-        //noinspection SimplifiableIfStatement
         if (id == R.id.view_website) {
             startBrowser();
             return true;
@@ -194,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
             Utils.toast(this, "analyze not ok");
         } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_OK) {
-//            toast("view web site ok");
             Log.d(TAG, "onActivityResult: view web site ok");
         } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_CANCELED) {
             Utils.toast(this,"Brand unknown");
