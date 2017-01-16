@@ -94,10 +94,10 @@ public class AnalizePhotoActivity extends Activity {
         mBrand = brand;
 
         mProgressDialog.dismiss();
-        mButtonOK.setVisibility(View.VISIBLE);
         mButtonNok.setVisibility(View.VISIBLE);
 
         if (mBrand != null) {
+            mButtonOK.setVisibility(View.VISIBLE);
             mBrandNameTextView.setText(mBrand.getBrandName());
             mBrandInfoTextView.setText(mBrand.getInfo());
 
