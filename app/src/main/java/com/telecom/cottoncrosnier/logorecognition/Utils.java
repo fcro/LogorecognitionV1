@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.telecom.cottoncrosnier.logorecognition.reference.Brand;
@@ -116,7 +115,7 @@ public class Utils {
             size = is.available();
             buffer = new byte[size];
 
-            if (is.read(buffer) != -1) {
+            if (is.read(buffer) <= 0) {
                 return null;
             }
 
@@ -159,8 +158,7 @@ public class Utils {
             size = is.available();
             buffer = new byte[size];
 
-            if (is.read(buffer) != -1) {
-                Log.e(TAG, "galleryToCache: read buffer != -1");
+            if (is.read(buffer) <= 0) {
                 return null;
             }
 
