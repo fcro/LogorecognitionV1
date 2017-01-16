@@ -36,7 +36,8 @@ public class AnalizePhotoActivity extends Activity {
     private TextView mBrandNameTextView;
     private TextView mBrandInfoTextView;
     private ImageView mImageView;
-    private Button mButton;
+    private Button mButtonOK;
+    private Button mButtonNok;
 
     private ProgressDialog mProgressDialog;
 
@@ -53,8 +54,11 @@ public class AnalizePhotoActivity extends Activity {
 
         mBrandNameTextView = (TextView) findViewById(R.id.text_brandname);
         mBrandInfoTextView = (TextView) findViewById(R.id.text_brandinfo);
+
         mImageView = (ImageView) findViewById(R.id.image_view);
-        mButton = (Button) findViewById(R.id.button_description_ok);
+
+        mButtonOK = (Button) findViewById(R.id.button_description_ok);
+        mButtonNok = (Button)findViewById(R.id.button_nok);
 
         final Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -72,22 +76,7 @@ public class AnalizePhotoActivity extends Activity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver,
                 new IntentFilter(AnalyzePhotoService.BROADCAST_ACTION_ANALYZE));
 
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent resultIntent = new Intent();
-
-                if (mBrand != null) {
-                    resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
-                    resultIntent.putExtra(MainActivity.KEY_PHOTO_BRAND, mBrand);
-                    setResult(RESULT_OK, resultIntent);
-                } else {
-                    setResult(RESULT_CANCELED, resultIntent);
-                }
-
-                finish();
-            }
-        });
+        initButtonListener(imgPath);
 
         Intent analyzeIntent = new Intent(this, AnalyzePhotoService.class);
         analyzeIntent.setData(imgPath);
@@ -105,7 +94,8 @@ public class AnalizePhotoActivity extends Activity {
         mBrand = brand;
 
         mProgressDialog.dismiss();
-        mButton.setVisibility(View.VISIBLE);
+        mButtonOK.setVisibility(View.VISIBLE);
+        mButtonNok.setVisibility(View.VISIBLE);
 
         if (mBrand != null) {
             mBrandNameTextView.setText(mBrand.getBrandName());
@@ -120,9 +110,37 @@ public class AnalizePhotoActivity extends Activity {
             mImageView.setImageBitmap(bitmap);
         } else {
             mBrandNameTextView.setText(R.string.no_result);
-            mButton.setText(R.string.button_nok);
+            mButtonOK.setText(R.string.button_nok);
         }
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
+    }
+
+    private void initButtonListener(final Uri imgPath){
+        mButtonOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent resultIntent = new Intent();
+
+                if (mBrand != null) {
+                    resultIntent.putExtra(MainActivity.KEY_PHOTO_PATH, imgPath);
+                    resultIntent.putExtra(MainActivity.KEY_PHOTO_BRAND, mBrand);
+                    setResult(RESULT_OK, resultIntent);
+                } else {
+                    setResult(RESULT_CANCELED, resultIntent);
+                }
+
+                finish();
+            }
+        });
+
+        mButtonNok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+
     }
 }

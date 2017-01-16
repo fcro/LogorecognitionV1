@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (requestCode == ANALYZE_PHOTO_REQUEST && resultCode == RESULT_CANCELED) {
             Utils.toast(this, "analyze not ok");
+            Log.d(TAG, "onActivityResult: CANCELED");
         } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_OK) {
             Log.d(TAG, "onActivityResult: view web site ok");
         } else if (requestCode == VIEW_BROWSER_REQUEST && resultCode == RESULT_CANCELED) {
