@@ -34,7 +34,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/button_description_ok"
             android:gravity="start"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:visibility="gone"/>
 
         <Button
             android:text="@string/button_nok"
@@ -45,7 +46,8 @@
             android:id="@+id/button_nok"
             android:gravity="end"
             android:textAlignment="center"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
