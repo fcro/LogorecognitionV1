@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Logo recognition</string>
+    <string name="action_settings">Options</string>
+
+    <string name="menu_view_web_site">Visiter le site</string>
+    <string name="menu_delete_photo">Supprimer la photo</string>
+
+    <string name="dialog_select_prompt">Choisir une photo</string>
+    <string name="dialog_select_camera">Appareil photo</string>
+    <string name="dialog_select_gallery">Galerie</string>
+
+    <string name="button_ok">Ajouter à la liste</string>
+    <string name="button_nok">Annuler</string>
+
+    <string name="toast_photo_ok">Photo capturée et ajoutée</string>
+    <string name="toast_photo_canceled">Aucune photo capturée</string>
+    <string name="toast_gallery_canceled">Aucune photo sélectionnée</string>
+
+    <string name="progress_analyzing">Analyse en cours</string>
+    <string name="progress_initializing">Initialisation de la base de données</string>
+    <string name="progress_wait">Patientez</string>
+
+    <string name="no_result">Aucun logo trouvé</string>
+</resources>

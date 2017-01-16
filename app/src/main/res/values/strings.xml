@@ -10,10 +10,10 @@
     <string name="dialog_select_gallery">Gallery</string>
 
     <string name="button_ok">Add to collection</string>
-    <string name="button_nok">Return</string>
+    <string name="button_nok">Cancel</string>
 
     <string name="toast_photo_ok">Photo taken and added</string>
-    <string name="toast_photo_canceled">Photo not taken</string>
+    <string name="toast_photo_canceled">No photo taken</string>
     <string name="toast_gallery_canceled">No photo selected</string>
 
     <string name="progress_analyzing">Analyzing image</string>
